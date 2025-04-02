@@ -1,0 +1,9 @@
+langflow
+langchain
+tensorflow
+numpy<2
+pandas
+matplotlib
+seaborn
+scipy
+scikit-learn
