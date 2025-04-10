@@ -11,5 +11,5 @@ seaborn
 # statsmodels
 plotly
 mplfinance
-pandas-ta
-ta-lib
+# pandas-ta
+# ta-lib
