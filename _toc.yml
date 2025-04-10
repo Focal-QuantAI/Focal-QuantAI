@@ -4,9 +4,9 @@
 format: jb-book
 root: README
 parts:
-    - caption: Blog
-      chapters:
-          - file: blog/ai_blog
+  - caption: Blog
+    chapters:
+      - file: blog/ai_blog
 # chapters:
 # - file: markdown
 # - file: notebooks
