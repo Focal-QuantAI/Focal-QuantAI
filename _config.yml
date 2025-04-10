@@ -40,8 +40,8 @@ launch_buttons:
   notebook_interface: classic # The interface interactive links will activate ["classic", "jupyterlab"]
 
 # Add a bibtex file so that we can create citations
-bibtex_bibfiles:
-  - references.bib
+# bibtex_bibfiles:
+#   - references.bib
 
 # Information about where the book exists on the web
 repository:

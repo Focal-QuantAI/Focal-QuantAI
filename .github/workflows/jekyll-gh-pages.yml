@@ -17,9 +17,12 @@ on:
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
+    # permissions:
     permissions:
-      pages: write
-      id-token: write
+      contents: read
+      pages: write # Required to deploy to GitHub Pages
+      id-token: write # Required for authentication with GitHub Pages      pages: write
+      # id-token: write
     steps:
       - uses: actions/checkout@v3
 
