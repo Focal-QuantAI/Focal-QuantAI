@@ -8,5 +8,5 @@ vendor/x
 .venv/
 
 # Ignore the build folder
-_build/
+# _build/
 __pycache__/
