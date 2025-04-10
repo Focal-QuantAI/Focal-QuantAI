@@ -8,7 +8,7 @@ Our core mission is simple, yet transformative: **Make Redundancy Redundant.**
 
 We believe that the true potential of your organization is unlocked when repetitive, time-consuming tasks are automated, data is intelligently analyzed, and your team is empowered to focus on strategic growth and innovation. Focal QuantAI is your dedicated partner in achieving this intelligent transformation.
 
-```tableofcontents
+```{tableofcontents}
 ```
 
 ---
