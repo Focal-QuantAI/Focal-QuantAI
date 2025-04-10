@@ -29,14 +29,14 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: install talib libs
-        run: |
-          wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
-          tar xvfz ta-lib-0.4.0-src.tar.gz
-          cd ta-lib
-          ./configure
-          make
-          sudo make install
+      # - name: install talib libs
+      #   run: |
+      #     wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+      #     tar xvfz ta-lib-0.4.0-src.tar.gz
+      #     cd ta-lib
+      #     ./configure
+      #     make
+      #     sudo make install
 
       - name: Install dependencies
         run: |
