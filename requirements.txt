@@ -1,14 +1,14 @@
 jupyter-book
-langchain
-langflow
+# langchain
+# langflow
 matplotlib
 numpy<2
 pandas
 scikit-learn
 scipy
 seaborn
-backtesting
-statsmodels
+# backtesting
+# statsmodels
 plotly
 mplfinance
 pandas-ta
