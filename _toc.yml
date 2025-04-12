@@ -7,7 +7,18 @@ parts:
   - caption: Blog
     chapters:
       - file: blog/ai_blog
-# chapters:
-# - file: markdown
-# - file: notebooks
-# - file: markdown-notebooks
+  - caption: "AI Book: Quantum Computing For Intraday Trading and Algorithmic Trading"
+    chapters:
+      - file: ai-books/quantum_computing_in_finance/book_toc
+      - file: ai-books/quantum_computing_in_finance/book_000
+      - file: ai-books/quantum_computing_in_finance/book_001
+      - file: ai-books/quantum_computing_in_finance/book_002
+      - file: ai-books/quantum_computing_in_finance/book_003
+      - file: ai-books/quantum_computing_in_finance/book_004
+      - file: ai-books/quantum_computing_in_finance/book_005
+      - file: ai-books/quantum_computing_in_finance/book_006
+      - file: ai-books/quantum_computing_in_finance/book_007
+      - file: ai-books/quantum_computing_in_finance/book_008
+      - file: ai-books/quantum_computing_in_finance/book_009
+      - file: ai-books/quantum_computing_in_finance/book_010
+      - file: ai-books/quantum_computing_in_finance/book_011
