@@ -1,175 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: null
+---
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silent Scribe AI | <span class="company-name"></span></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0f172a',
-                        secondary: '#1e293b',
-                        accent: '#3b82f6',
-                        darkblue: '#1e40af',
-                        code: '#0ea5e9',
-                        terminal: '#0d1117'
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
-                        'mono': ['Fira Code', 'monospace']
-                    },
-                    boxShadow: {
-                        'code': '0 10px 15px -3px rgba(59, 130, 246, 0.3)',
-                        'terminal': '0 0 15px rgba(59, 130, 246, 0.2)'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .code-block {
-            background-color: #1e293b;
-            border-left: 4px solid #3b82f6;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .terminal {
-            background-color: #0d1117;
-            border: 1px solid #1e40af;
-            font-family: 'Fira Code', monospace;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-        }
-
-        .terminal-header {
-            background-color: #1e293b;
-            border-bottom: 1px solid #1e40af;
-        }
-
-        .terminal-body {
-            background-color: #0d1117;
-        }
-
-        .prompt {
-            color: #3b82f6;
-        }
-
-        .command {
-            color: #0ea5e9;
-        }
-
-        .response {
-            color: #f8fafc;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .nav-link:hover {
-            color: #3b82f6;
-        }
-
-        .input-field {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        .input-field:focus {
-            border-color: #3b82f6;
-            outline: none;
-        }
-
-        .glow {
-            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silent Scribe AI | <span class="company-name"></span></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="min-h-screen">
-    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <div class="flex items-center">
-                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
-                            <span class="text-white font-bold text-xl"><span class="company-name"></span><span
-                                    class="gradient-text"></span></span>
-                        </div>
-                    </div>
-                    <div class="hidden md:ml-10 md:flex md:space-x-8">
-                        <a href="#overview"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Overview</a>
-                        <a href="#features"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Features</a>
-                        <a href="#technology"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Technology</a>
-                        <a href="#pricing"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Pricing</a>
-                        <a href="#contact"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
-                    </div>
-                </div>
-                <div class="hidden md:ml-4 md:flex md:items-center">
-                    <button
-                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Get Started
-                    </button>
-                </div>
-                <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" id="mobile-menu-button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#overview"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Overview</a>
-                <a href="#features"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Features</a>
-                <a href="#technology"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Technology</a>
-                <a href="#pricing"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Pricing</a>
-                <a href="#contact"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
-                <div class="mt-4 px-3">
-                    <button
-                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Get Started
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
+  {% include header.html %}
 
-    <section id="overview" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <section id="overview" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 mb-10 md:mb-0">
                 <div class="inline-block bg-darkblue/20 text-accent px-3 py-1 rounded-full text-xs font-medium mb-4">
