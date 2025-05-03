@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.code-block {
+    background-color: #1e293b;
+    border-left: 4px solid #3b82f6;
+    font-family: 'Fira Code', monospace;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+}
+
+.product-card {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    border: 1px solid #334155;
+}
+
+.product-card:hover {
+    border-color: #3b82f6;
+}
+
+.nav-link:hover {
+    color: #3b82f6;
+}
+
+.input-field {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+}
+
+.input-field:focus {
+    border-color: #3b82f6;
+    outline: none;
+}

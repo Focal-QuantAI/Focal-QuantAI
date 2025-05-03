@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <script>
+        fetch('config.json')
+            .then(response => response.json())
+            .then(config => {
+                window.config = config;
+            });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socius AI | AI-Powered Social Media Optimization</title>
@@ -159,8 +167,9 @@
                     <div class="flex-shrink-0 flex items-center">
                         <div class="flex items-center">
                             <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
-                            <span class="text-white font-bold text-xl">Focal<span
-                                    class="gradient-text">Quant</span>AI</span>
+                            <span class="text-white font-bold text-xl"><span class="company-name"></span><span
+                                    class="gradient-text"></span></span>
+
                         </div>
                     </div>
                     <div class="hidden md:ml-10 md:flex md:space-x-8">
@@ -226,7 +235,7 @@
                     <span class="matrix-text glow">Socius AI</span><br>
                     Predictive Social Media Intelligence
                 </h1>
-                <p class="text-lg text-gray-300 mb-8">
+                <p class="text-lg text-gray-300 mb-8" id="company-description">
                     Advanced AI algorithms analyze, predict, and optimize your social media strategy with
                     <span class="text-accent font-medium">92.7% accuracy</span> in engagement forecasting.
                 </p>
@@ -725,8 +734,9 @@ print(f"Predicted engagement: {score:.1f}%")</code></pre>
                 <div class="mb-8 md:mb-0">
                     <div class="flex items-center mb-4">
                         <i class="fas fa-network-wired text-accent text-2xl mr-2"></i>
-                        <span class="text-white font-bold text-xl">Focal<span
-                                class="gradient-text">Quant</span>AI</span>
+                        <span class="text-white font-bold text-xl"><span class="company-name"></span><span
+                                class="gradient-text"></span></span>
+
                     </div>
                     <p class="text-gray-400 max-w-xs">
                         Advanced AI solutions for social media optimization.
@@ -764,22 +774,22 @@ print(f"Predicted engagement: {score:.1f}%")</code></pre>
             </div>
             <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; 2023 Focal Quant AI. All rights reserved.
+                    &copy; <span class="copyright-year"></span> <span class="company-name"></span>. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    <span class="twitter text-gray-400 hover:text-accent">
                         <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    </span>
+                    <span class="linkedin text-gray-400 hover:text-accent">
                         <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    </span>
+                    <span class="github text-gray-400 hover:text-accent">
                         <i class="fab fa-github"></i>
-                    </a>
+                    </span>
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>    
 
     <script>
         // Mobile menu toggle
@@ -787,6 +797,25 @@ print(f"Predicted engagement: {score:.1f}%")</code></pre>
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
+        window.addEventListener('load', function () {
+            const config = window.config;
+            const companyNameSpans = document.querySelectorAll('.company-name');
+            const copyrightYearSpan = document.querySelector('.copyright-year');
+
+            companyNameSpans.forEach(span => span.textContent = config.company.name.split(" ")[0]);
+
+            document.querySelectorAll('.gradient-text').forEach(span => span.textContent = config.company.name.split(" ")[1]);
+            copyrightYearSpan.textContent = new Date().getFullYear();
+            document.querySelectorAll('.twitter').forEach(span => span.querySelector('i').parentElement.href = config.social.twitter);
+            document.querySelectorAll('.linkedin').forEach(span => span.querySelector('i').parentElement.href = config.social.linkedin);
+            document.querySelectorAll('.github').forEach(span => span.querySelector('i').parentElement.href = config.social.github);
+
+
+            const sloganElement = document.querySelector('footer .text-gray-400.max-w-xs');
+            sloganElement.innerHTML = config.company.slogan;
+
+        });
+
     </script>
 </body>
 

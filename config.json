@@ -1,0 +1,18 @@
+{
+  "companyName": "Focal Quant AI",
+  "companySlogan": "Advanced AI solutions for algorithmic trading and business transformation.",
+  "location": "Gurgaon, Harayana",
+  "email": "contact@focalquantai.com",
+  "phone": "+91-7799920600",
+  "operatingHours": {
+    "weekdays": "Monday - Friday: 9am - 6pm",
+    "weekends": "Saturday - Sunday: Closed"
+  },
+  "socialMedia": {
+    "twitter": "#",
+    "linkedin": "#",
+    "github": "#",
+    "medium": "#"
+  },
+  "copyrightYear": "2023"
+}

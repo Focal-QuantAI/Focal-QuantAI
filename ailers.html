@@ -48,6 +48,9 @@
             color: transparent;
         }
 
+        .company-name {
+            color: white;
+        }
         .code-block {
             background-color: #1e293b;
             border-left: 4px solid #3b82f6;
@@ -116,8 +119,8 @@
                     <div class="flex-shrink-0 flex items-center">
                         <div class="flex items-center">
                             <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
-                            <span class="text-white font-bold text-xl">Focal<span
-                                    class="gradient-text">Quant</span>AI</span>
+                            <span class=" font-bold text-xl"><span
+                                    class="company-name">Focal<span class="gradient-text">Quant</span>AI</span></span>
                         </div>
                     </div>
                     <div class="hidden md:ml-10 md:flex md:space-x-8">
@@ -683,7 +686,7 @@ app.post('/webhook', (req, res) => {
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Location</h4>
-                                    <p class="text-gray-300">San Francisco, CA</p>
+                                    <p class="text-gray-300"><span class="location">San Francisco, CA</span></p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -692,7 +695,7 @@ app.post('/webhook', (req, res) => {
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Email</h4>
-                                    <p class="text-gray-300">contact@focalquantai.com</p>
+                                    <p class="text-gray-300"><span class="email">contact@focalquantai.com</span></p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -701,7 +704,7 @@ app.post('/webhook', (req, res) => {
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Phone</h4>
-                                    <p class="text-gray-300">+1 (415) 555-0199</p>
+                                    <p class="text-gray-300"><span class="phone">+1 (415) 555-0199</span></p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -709,7 +712,7 @@ app.post('/webhook', (req, res) => {
                                     <i class="fas fa-clock"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-medium mb-1">Support Hours</h4>
+                                    <h4 class="font-medium mb-1">Support Hours</h4>                                    
                                     <p class="text-gray-300">Monday - Friday: 9AM - 6PM PST</p>
                                     <p class="text-gray-300 text-sm">Enterprise: 24/7</p>
                                 </div>
@@ -728,10 +731,10 @@ app.post('/webhook', (req, res) => {
                 <div class="mb-8 md:mb-0">
                     <div class="flex items-center mb-4">
                         <i class="fas fa-robot text-accent text-2xl mr-2"></i>
-                        <span class="text-white font-bold text-xl">Focal<span
-                                class="gradient-text">Quant</span>AI</span>
+                        <span class="text-white font-bold text-xl"><span class="company-name">Focal<span
+                            class="gradient-text">Quant</span>AI</span></span>
                     </div>
-                    <p class="text-gray-400 max-w-xs">
+                    <p class="text-gray-400 max-w-xs"><span class="company-slogan">
                         Advanced AI solutions for legal and ethical compliance.
                     </p>
                 </div>
@@ -767,18 +770,18 @@ app.post('/webhook', (req, res) => {
             </div>
             <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; 2023 Focal Quant AI. All rights reserved.
+                    &copy; <span class="copyright-year">2023</span> <span class="company-name">Focal Quant AI</span>. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="twitter">
                         <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    </span></a>
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="linkedin">
                         <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-accent">
+                    </span></a>
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="github">
                         <i class="fab fa-github"></i>
-                    </a>
+                    </span></a>
                 </div>
             </div>
         </div>

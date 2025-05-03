@@ -1,82 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focal Quant AI | Advanced AI Solutions for Algorithmic Trading</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0f172a',
-                        secondary: '#1e293b',
-                        accent: '#3b82f6',
-                        darkblue: '#1e40af',
-                        code: '#0ea5e9'
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
-                        'mono': ['Fira Code', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .code-block {
-            background-color: #1e293b;
-            border-left: 4px solid #3b82f6;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .product-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-        }
-
-        .product-card:hover {
-            border-color: #3b82f6;
-        }
-
-        .nav-link:hover {
-            color: #3b82f6;
-        }
-
-        .input-field {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        .input-field:focus {
-            border-color: #3b82f6;
-            outline: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="min-h-screen">
@@ -88,8 +19,8 @@
                     <div class="flex-shrink-0 flex items-center">
                         <div class="flex items-center">
                             <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
-                            <span class="text-white font-bold text-xl">Focal<span
-                                    class="gradient-text">Quant</span>AI</span>
+                            <span class="text-white font-bold text-xl"><span
+                                    class="company-name"></span></span>
                         </div>
                     </div>
                     <div class="hidden md:ml-10 md:flex md:space-x-8">
@@ -215,7 +146,8 @@ execute_trades(predictions)
     <section id="about" class="py-20 bg-secondary">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">About <span class="gradient-text">Focal Quant AI</span></h2>
+                <h2 class="text-3xl font-bold mb-4">About <span class="gradient-text"><span
+                            class="company-name"></span></span></h2>
                 <p class="text-gray-300 max-w-3xl mx-auto">
                     We are at the forefront of AI-driven quantitative finance, developing sophisticated algorithms that
                     identify and capitalize on market inefficiencies with unprecedented speed and accuracy.
@@ -670,7 +602,7 @@ while trading_hours:
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Location</h4>
-                                    <p class="text-gray-300">Gurgaon, Harayana</p>
+                                    <p class="text-gray-300"><span class="location"></span></p>
                                     <!-- <p class="text-gray-300">New York, NY</p> -->
                                     <!-- <p class="text-gray-300">London, UK</p> -->
                                 </div>
@@ -682,7 +614,7 @@ while trading_hours:
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Email</h4>
-                                    <p class="text-gray-300">contact@focalquantai.com</p>
+                                    <p class="text-gray-300"><span class="email"></span></p>
                                     <!-- <p class="text-gray-300">support@focalquantai.com</p> -->
                                 </div>
                             </div>
@@ -693,7 +625,7 @@ while trading_hours:
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Phone</h4>
-                                    <p class="text-gray-300">+91-7799920600</p>
+                                    <p class="text-gray-300"><span class="phone"></span></p>
                                 </div>
                             </div>
 
@@ -703,8 +635,8 @@ while trading_hours:
                                 </div>
                                 <div>
                                     <h4 class="font-medium mb-1">Hours</h4>
-                                    <p class="text-gray-300">Monday - Friday: 9am - 6pm</p>
-                                    <p class="text-gray-300">Saturday - Sunday: Closed</p>
+                                    <p class="text-gray-300"><span class="operating-hours-weekdays"></span></p>
+                                    <p class="text-gray-300"><span class="operating-hours-weekends"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -712,16 +644,17 @@ while trading_hours:
                         <div class="mt-8">
                             <h3 class="text-xl font-bold mb-4">Follow Us</h3>
                             <div class="flex space-x-4">
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="twitter">
                                     <i class="fab fa-twitter text-xl"></i>
+                                    </span>
                                 </a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="linkedin">
                                     <i class="fab fa-linkedin text-xl"></i>
-                                </a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    </span></a>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="github">
                                     <i class="fab fa-github text-xl"></i>
-                                </a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    </span></a>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="medium">
                                     <i class="fab fa-medium text-xl"></i>
                                 </a>
                             </div>
@@ -737,9 +670,9 @@ while trading_hours:
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-white text-lg font-semibold mb-4">Focal Quant AI</h3>
+                    <h3 class="text-white text-lg font-semibold mb-4"><span class="company-name"></span></h3>
                     <p class="text-gray-400 text-sm">
-                        Advanced AI solutions for algorithmic trading and business transformation.
+                        <span class="company-slogan"></span>
                     </p>
                 </div>
 
@@ -787,7 +720,7 @@ while trading_hours:
 
             <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; 2023 Focal Quant AI. All rights reserved.
+                    &copy; <span class="copyright-year"></span> <span class="company-name"></span>. All rights reserved.
                 </p>
                 <div class="flex space-x-6">
                     <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Privacy
@@ -800,48 +733,7 @@ while trading_hours:
         </div>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-
-                    // Close mobile menu if open
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        });
-
-        // Add shadow to navbar on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 10) {
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('shadow-lg');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
