@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socius AI | AI-Powered Social Media Optimization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#1e293b',
+                        accent: '#3b82f6',
+                        darkblue: '#1e40af',
+                        code: '#0ea5e9',
+                        terminal: '#0d1117',
+                        matrix: '#10b981'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['Fira Code', 'monospace']
+                    },
+                    boxShadow: {
+                        'code': '0 10px 15px -3px rgba(59, 130, 246, 0.3)',
+                        'terminal': '0 0 15px rgba(59, 130, 246, 0.2)',
+                        'matrix': '0 0 10px rgba(16, 185, 129, 0.5)'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'text-gradient': 'text-gradient 1.5s linear infinite'
+                    },
+                    keyframes: {
+                        'text-gradient': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .matrix-text {
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: text-gradient 3s ease infinite;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0d1117;
+            border: 1px solid #1e40af;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .terminal-header {
+            background-color: #1e293b;
+            border-bottom: 1px solid #1e40af;
+        }
+
+        .terminal-body {
+            background-color: #0d1117;
+        }
+
+        .prompt {
+            color: #3b82f6;
+        }
+
+        .command {
+            color: #0ea5e9;
+        }
+
+        .response {
+            color: #f8fafc;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .input-field {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .glow {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+
+        .matrix-grid {
+            background-image:
+                linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .dashboard-preview {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+        }
+
+        .pulse-dot {
+            animation: pulse-slow 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center">
+                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
+                            <span class="text-white font-bold text-xl">Focal<span
+                                    class="gradient-text">Quant</span>AI</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#overview"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Overview</a>
+                        <a href="#features"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Features</a>
+                        <a href="#technology"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Technology</a>
+                        <a href="#pricing"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Pricing</a>
+                        <a href="#contact"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden md:ml-4 md:flex md:items-center">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Launch Dashboard
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Overview</a>
+                <a href="#features"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Features</a>
+                <a href="#technology"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Technology</a>
+                <a href="#pricing"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Pricing</a>
+                <a href="#contact"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
+                <div class="mt-4 px-3">
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Launch Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="overview" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div class="inline-block bg-darkblue/20 text-accent px-3 py-1 rounded-full text-xs font-medium mb-4">
+                    <i class="fas fa-bolt mr-1"></i> AI-Powered Social Optimization
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    <span class="matrix-text glow">Socius AI</span><br>
+                    Predictive Social Media Intelligence
+                </h1>
+                <p class="text-lg text-gray-300 mb-8">
+                    Advanced AI algorithms analyze, predict, and optimize your social media strategy with
+                    <span class="text-accent font-medium">92.7% accuracy</span> in engagement forecasting.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-6 py-3 rounded-md font-medium transition duration-300">
+                        Start Free Trial <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button
+                        class="border border-accent text-accent hover:bg-secondary px-6 py-3 rounded-md font-medium transition duration-300">
+                        View API Docs
+                    </button>
+                </div>
+                <div class="mt-8 flex items-center space-x-4">
+                    <div class="flex -space-x-2">
+                        <img class="w-8 h-8 rounded-full border-2 border-secondary"
+                            src="https://randomuser.me/api/portraits/women/12.jpg" alt="">
+                        <img class="w-8 h-8 rounded-full border-2 border-secondary"
+                            src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                        <img class="w-8 h-8 rounded-full border-2 border-secondary"
+                            src="https://randomuser.me/api/portraits/women/45.jpg" alt="">
+                    </div>
+                    <div class="text-sm text-gray-400">
+                        Trusted by <span class="text-white">850+</span> marketing teams
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-10 relative">
+                <div class="dashboard-preview rounded-xl overflow-hidden relative z-10">
+                    <div class="flex items-center px-4 py-3 bg-secondary border-b border-gray-800">
+                        <div class="flex space-x-2 mr-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-gray-300 text-sm font-mono">
+                            socius-ai-dashboard
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div class="bg-primary p-3 rounded-lg border border-gray-800">
+                                <div class="text-gray-400 text-xs mb-1">Engagement Rate</div>
+                                <div class="text-2xl font-bold text-accent">8.42%</div>
+                                <div class="text-green-400 text-xs mt-1">↑ 12.5%</div>
+                            </div>
+                            <div class="bg-primary p-3 rounded-lg border border-gray-800">
+                                <div class="text-gray-400 text-xs mb-1">Optimal Post Time</div>
+                                <div class="text-2xl font-bold text-accent">3:18 PM</div>
+                                <div class="text-green-400 text-xs mt-1">89% accuracy</div>
+                            </div>
+                            <div class="bg-primary p-3 rounded-lg border border-gray-800">
+                                <div class="text-gray-400 text-xs mb-1">Content Score</div>
+                                <div class="text-2xl font-bold text-accent">92/100</div>
+                                <div class="text-green-400 text-xs mt-1">AI recommended</div>
+                            </div>
+                        </div>
+                        <div class="bg-primary rounded-lg border border-gray-800 p-3 mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="text-gray-300 text-sm">Engagement Prediction</div>
+                                <div class="text-xs text-gray-500">Next 7 days</div>
+                            </div>
+                            <div class="h-32 bg-secondary rounded">
+                                <!-- Chart placeholder -->
+                                <div class="relative h-full w-full">
+                                    <div class="absolute bottom-0 left-0 right-0 flex items-end space-x-1 px-2">
+                                        <div class="w-1/7 h-8 bg-accent/50 rounded-t"></div>
+                                        <div class="w-1/7 h-16 bg-accent/70 rounded-t"></div>
+                                        <div class="w-1/7 h-24 bg-accent rounded-t"></div>
+                                        <div class="w-1/7 h-20 bg-accent/80 rounded-t"></div>
+                                        <div class="w-1/7 h-12 bg-accent/60 rounded-t"></div>
+                                        <div class="w-1/7 h-28 bg-accent/90 rounded-t"></div>
+                                        <div class="w-1/7 h-18 bg-accent/75 rounded-t"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-primary rounded-lg border border-gray-800 p-3">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="text-gray-300 text-sm">Content Recommendations</div>
+                                <div class="text-xs text-gray-500">AI-generated</div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-accent mr-2 pulse-dot"></div>
+                                    <div class="text-xs text-gray-300">Increase video content by 22%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-accent mr-2 pulse-dot"></div>
+                                    <div class="text-xs text-gray-300">Optimal hashtag set: #tech #ai #marketing</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 rounded-full bg-accent mr-2 pulse-dot"></div>
+                                    <div class="text-xs text-gray-300">Post 3x this week at 9:42 AM for max reach</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -bottom-8 -left-8 w-64 h-64 rounded-full bg-blue-900/20 blur-3xl -z-10"></div>
+                <div class="absolute -top-8 -right-8 w-64 h-64 rounded-full bg-blue-900/20 blur-3xl -z-10"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-secondary matrix-grid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Precision <span class="matrix-text">Social Intelligence</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Socius AI leverages advanced machine learning models to predict and optimize every aspect of your
+                    social strategy.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Optimal Timing Engine</h3>
+                    <p class="text-gray-300 mb-4">
+                        Our temporal analysis algorithms identify the perfect posting schedule down to the minute.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Real-time audience activity tracking</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Competitor timing pattern analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Platform-specific optimization</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            predict --platform=instagram --audience=genz
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Content Forecasting</h3>
+                    <p class="text-gray-300 mb-4">
+                        Predictive models estimate engagement metrics before you post with 92.7% accuracy.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Sentiment analysis scoring</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Historical performance matching</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Trend relevance scoring</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            forecast --content="ai-tech-article" --confidence=0.927
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Automated Optimization</h3>
+                    <p class="text-gray-300 mb-4">
+                        Continuous A/B testing and reinforcement learning to refine your strategy.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Automated content A/B testing</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Real-time performance adjustments</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Dynamic hashtag optimization</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            optimize --strategy=reinforcement --interval=24h
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Advanced <span class="matrix-text">AI Architecture</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Built on cutting-edge machine learning models trained on billions of social interactions.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <div class="bg-secondary p-6 rounded-lg border border-gray-800">
+                        <h3 class="text-xl font-bold mb-4">Model Stack</h3>
+                        <div class="space-y-6">
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Temporal Neural Network</h4>
+                                        <p class="text-gray-400 text-sm">Predicts optimal posting times with 89%
+                                            accuracy</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-project-diagram"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Transformer Ensemble</h4>
+                                        <p class="text-gray-400 text-sm">Content performance forecasting model</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Reinforcement Learning</h4>
+                                        <p class="text-gray-400 text-sm">Continuous strategy optimization engine</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 bg-primary p-6 rounded-lg border border-gray-800">
+                            <h3 class="text-xl font-bold mb-4">Data Pipeline</h3>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent rounded-full" style="width: 92%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-400 mt-1">92% Prediction Accuracy</div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent rounded-full" style="width: 87%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-400 mt-1">87% Engagement Lift</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-2">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-accent">4.2B+</div>
+                                    <div class="text-xs text-gray-400">Data Points</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-accent">18.7M</div>
+                                    <div class="text-xs text-gray-400">Posts Analyzed</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-accent">92.7%</div>
+                                    <div class="text-xs text-gray-400">Accuracy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2">
+                    <div class="code-block p-6 rounded-lg h-full">
+                        <div class="flex mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <pre class="text-gray-100 overflow-x-auto"><code class="language-python"># Socius AI Core Prediction Algorithm
+import tensorflow as tf
+from transformers import TFAutoModelForSequenceClassification
+
+class SociusPredictor:
+    def __init__(self):
+        self.temporal_model = tf.keras.models.load_model('temporal_nn.h5')
+        self.content_model = TFAutoModelForSequenceClassification.from_pretrained('socius-content-bert')
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+
+    def predict_engagement(self, content, timing_features):
+        """Predict engagement score for content at given time"""
+        # Temporal features analysis
+        time_score = self.temporal_model.predict(timing_features)
+
+        # Content features analysis
+        content_inputs = self._preprocess_content(content)
+        content_score = self.content_model(content_inputs).logits
+
+        # Combined prediction
+        combined = 0.6 * content_score + 0.4 * time_score
+        return combined * 100  # Convert to percentage
+
+    def optimize_schedule(self, content_batch, time_window):
+        """Find optimal posting time within window"""
+        time_points = np.linspace(time_window[0], time_window[1], 1440)
+        predictions = [self.predict_engagement(content_batch, t) for t in time_points]
+        optimal_idx = np.argmax(predictions)
+        return time_points[optimal_idx], predictions[optimal_idx]
+
+    def _preprocess_content(self, content):
+        # NLP preprocessing pipeline
+        return tokenizer(content, return_tensors='tf', truncation=True, padding=True)
+
+# Initialize predictor
+predictor = SociusPredictor()
+
+# Example prediction
+content = "New AI breakthrough in social media optimization..."
+timing_features = get_current_timing_features()
+score = predictor.predict_engagement(content, timing_features)
+print(f"Predicted engagement: {score:.1f}%")</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Performance <span class="matrix-text">Pricing</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Scale your social media strategy with our flexible, results-driven pricing.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Starter Plan -->
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Analyst</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $99<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>3 social accounts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Daily predictions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Basic analytics</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>API Access</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Advanced optimization</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="bg-primary p-8 rounded-lg border-2 border-accent relative">
+                    <div
+                        class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl rounded-tr">
+                        OPTIMAL
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Strategist</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $299<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>10 social accounts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Real-time predictions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Advanced analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>API Access</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Enterprise features</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Enterprise</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        Custom
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Unlimited accounts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Real-time optimization</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Premium analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Full API Access</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Dedicated support</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-blue-900/30 to-primary">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to <span class="matrix-text">Optimize</span> Your Social Strategy?
+            </h2>
+            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join 850+ marketing teams using Socius AI to predict and maximize their social media performance.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button
+                    class="bg-accent hover:bg-darkblue text-white px-8 py-3 rounded-md font-medium transition duration-300">
+                    Start Free Trial
+                </button>
+                <button
+                    class="border border-accent text-accent hover:bg-secondary px-8 py-3 rounded-md font-medium transition duration-300">
+                    Request Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-network-wired text-accent text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl">Focal<span
+                                class="gradient-text">Quant</span>AI</span>
+                    </div>
+                    <p class="text-gray-400 max-w-xs">
+                        Advanced AI solutions for social media optimization.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#overview" class="text-gray-400 hover:text-accent">Overview</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-accent">Features</a></li>
+                            <li><a href="#technology" class="text-gray-400 hover:text-accent">Technology</a></li>
+                            <li><a href="#pricing" class="text-gray-400 hover:text-accent">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">API Reference</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Case Studies</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">About</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Privacy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Focal Quant AI. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

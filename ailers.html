@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-LERS | Focal Quant AI - Automated Legal & Ethical Review System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#1e293b',
+                        accent: '#3b82f6',
+                        darkblue: '#1e40af',
+                        code: '#0ea5e9',
+                        terminal: '#0d1117'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['Fira Code', 'monospace']
+                    },
+                    boxShadow: {
+                        'code': '0 10px 15px -3px rgba(59, 130, 246, 0.3)',
+                        'terminal': '0 0 15px rgba(59, 130, 246, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0d1117;
+            border: 1px solid #1e40af;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .terminal-header {
+            background-color: #1e293b;
+            border-bottom: 1px solid #1e40af;
+        }
+
+        .terminal-body {
+            background-color: #0d1117;
+        }
+
+        .prompt {
+            color: #3b82f6;
+        }
+
+        .command {
+            color: #0ea5e9;
+        }
+
+        .response {
+            color: #f8fafc;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .input-field {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .glow {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center">
+                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
+                            <span class="text-white font-bold text-xl">Focal<span
+                                    class="gradient-text">Quant</span>AI</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#overview"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Overview</a>
+                        <a href="#features"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Features</a>
+                        <a href="#integration"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Integration</a>
+                        <a href="#pricing"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Pricing</a>
+                        <a href="#contact"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden md:ml-4 md:flex md:items-center">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Request Demo
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Overview</a>
+                <a href="#features"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Features</a>
+                <a href="#integration"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Integration</a>
+                <a href="#pricing"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Pricing</a>
+                <a href="#contact"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
+                <div class="mt-4 px-3">
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Request Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="overview" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div class="inline-block bg-darkblue/20 text-accent px-3 py-1 rounded-full text-xs font-medium mb-4">
+                    <i class="fas fa-shield-alt mr-1"></i> AI-Powered Compliance
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    <span class="gradient-text glow">AI-LERS</span><br>
+                    AI Legal & Ethical Review System
+                </h1>
+                <p class="text-lg text-gray-300 mb-8">
+                    Automated compliance checks and risk assessments powered by advanced natural language processing and
+                    machine learning.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-6 py-3 rounded-md font-medium transition duration-300">
+                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button
+                        class="border border-accent text-accent hover:bg-secondary px-6 py-3 rounded-md font-medium transition duration-300">
+                        View API Docs
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-10">
+                <div class="terminal rounded-lg overflow-hidden">
+                    <div class="terminal-header flex items-center px-4 py-2">
+                        <div class="flex space-x-2 mr-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-gray-300 text-sm font-mono">
+                            terminal ~/ai-lers/analyze
+                        </div>
+                    </div>
+                    <div class="terminal-body p-4">
+                        <div class="mb-2">
+                            <span class="prompt font-mono">$</span>
+                            <span class="command font-mono">ai-lers analyze --file=contract.docx
+                                --jurisdiction=EU</span>
+                        </div>
+                        <div class="response font-mono text-sm mb-4">
+                            <div class="text-green-400 mb-1">[INFO] Analyzing document: contract.docx</div>
+                            <div class="text-blue-300 mb-1">[PROCESSING] Extracting legal clauses...</div>
+                            <div class="text-yellow-300 mb-1">[WARNING] 3 potential GDPR compliance issues detected
+                            </div>
+                            <div class="text-green-400 mb-1">[SUCCESS] Analysis complete in 1.23s</div>
+                        </div>
+                        <div class="mb-2">
+                            <span class="prompt font-mono">$</span>
+                            <span class="command font-mono">ai-lers report --format=json</span>
+                        </div>
+                        <div class="response font-mono text-xs">
+                            {<br>
+                            &nbsp;&nbsp;"document": "contract.docx",<br>
+                            &nbsp;&nbsp;"jurisdiction": "EU",<br>
+                            &nbsp;&nbsp;"compliance_score": 0.82,<br>
+                            &nbsp;&nbsp;"issues": [<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "DATA_RETENTION",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"clause": "Section 4.2",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"severity": "HIGH",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"suggestion": "Limit retention period to 6 months"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "PRIVACY_NOTICE",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"clause": "Section 7.1",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"severity": "MEDIUM",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"suggestion": "Add explicit consent mechanism"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;]<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Advanced <span class="gradient-text">Compliance Features</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    AI-LERS provides comprehensive legal and ethical analysis with sub-second response times.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Automated Contract Analysis</h3>
+                    <p class="text-gray-300 mb-4">
+                        Parse and analyze complex legal documents with NLP-powered clause extraction and risk scoring.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Identify problematic clauses in seconds</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Compare against 50+ standard templates</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Track changes and version history</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            ai-lers analyze --file=contract.pdf
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Regulatory Compliance</h3>
+                    <p class="text-gray-300 mb-4">
+                        Continuous monitoring against evolving regulations across multiple jurisdictions.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>GDPR, CCPA, HIPAA, SOX compliance checks</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Jurisdiction-specific rule engine</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Automatic regulatory updates</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            ai-lers compliance --reg=GDPR --region=EU
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Ethical Impact</h3>
+                    <p class="text-gray-300 mb-4">
+                        Assess potential ethical implications and bias in policies, algorithms, and business decisions.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Bias detection in language and logic</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Stakeholder impact analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Ethical risk scoring framework</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            ai-lers ethics --model=algorithm.py
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section id="integration" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Seamless <span class="gradient-text">Integration</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Connect AI-LERS with your existing systems using our comprehensive APIs and SDKs.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <div class="bg-secondary p-6 rounded-lg border border-gray-800">
+                        <h3 class="text-xl font-bold mb-4">Integration Options</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary p-3 rounded border border-gray-800">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-python text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium text-sm">Python SDK</h4>
+                                <p class="text-gray-400 text-xs mt-1">Full-featured SDK for Python applications</p>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800">
+                                <div class="text-accent mb-2">
+                                    <i class="fas fa-code text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium text-sm">REST API</h4>
+                                <p class="text-gray-400 text-xs mt-1">Standard REST endpoints for any platform</p>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-js text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium text-sm">Node.js</h4>
+                                <p class="text-gray-400 text-xs mt-1">NPM package for JavaScript/TypeScript</p>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800">
+                                <div class="text-accent mb-2">
+                                    <i class="fas fa-plug text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium text-sm">CLI Tool</h4>
+                                <p class="text-gray-400 text-xs mt-1">Command line interface for automation</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-6 rounded-lg border border-gray-800 mt-8">
+                        <h3 class="text-xl font-bold mb-4">Supported Platforms</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-windows text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">Windows</h4>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-linux text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">Linux</h4>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-apple text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">macOS</h4>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fas fa-server text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">Docker</h4>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fas fa-cloud text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">AWS</h4>
+                            </div>
+                            <div class="bg-primary p-3 rounded border border-gray-800 flex flex-col items-center">
+                                <div class="text-accent mb-2">
+                                    <i class="fab fa-google text-xl"></i>
+                                </div>
+                                <h4 class="font-medium text-xs">GCP</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2">
+                    <div class="code-block p-6 rounded-lg h-full">
+                        <div class="flex mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <pre class="text-gray-100 overflow-x-auto"><code class="language-javascript">// AI-LERS Node.js SDK Example
+const AILERS = require('ai-lers-sdk');
+
+// Initialize with your API key
+const client = new AILERS({
+  apiKey: 'your_api_key',
+  environment: 'production' // or 'sandbox'
+});
+
+// Analyze a contract document
+client.analyzeContract({
+  file: 'contract.pdf',
+  jurisdiction: 'US-CA',
+  callbackUrl: 'https://your-app.com/webhook'
+})
+.then(report => {
+  console.log('Compliance Score:', report.score);
+  console.log('Critical Issues:', report.issues.filter(i => i.severity === 'HIGH'));
+
+  // Save report to your database
+  saveToDatabase(report);
+})
+.catch(error => {
+  console.error('Analysis failed:', error.message);
+});
+
+// Webhook handler for async results
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['x-ailers-signature'];
+  const isValid = client.verifyWebhook(req.body, signature);
+
+  if (isValid) {
+    processResults(req.body);
+    res.status(200).end();
+  } else {
+    res.status(403).end();
+  }
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Flexible <span class="gradient-text">Pricing</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Choose the plan that fits your compliance needs and scale as you grow.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Starter Plan -->
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Starter</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $499<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>100 document analyses/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Basic compliance checks</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Email support</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>API Access</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Custom regulations</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="bg-primary p-8 rounded-lg border-2 border-accent relative">
+                    <div
+                        class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl rounded-tr">
+                        POPULAR
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Professional</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $1,499<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>500 document analyses/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Advanced compliance checks</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Full API Access</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Custom regulations</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Enterprise</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        Custom
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Unlimited document analyses</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Premium compliance checks</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>24/7 dedicated support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Full API Access</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Custom regulations</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Request a <span class="gradient-text">Demo</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    See how AI-LERS can transform your compliance workflow with a personalized demo.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 max-w-5xl mx-auto">
+                <div class="lg:w-1/2">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first-name" class="block text-sm font-medium text-gray-300 mb-1">First
+                                    Name</label>
+                                <input type="text" id="first-name" class="input-field w-full px-4 py-3 rounded-md">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-medium text-gray-300 mb-1">Last
+                                    Name</label>
+                                <input type="text" id="last-name" class="input-field w-full px-4 py-3 rounded-md">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="email" class="input-field w-full px-4 py-3 rounded-md">
+                        </div>
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-300 mb-1">Company</label>
+                            <input type="text" id="company" class="input-field w-full px-4 py-3 rounded-md">
+                        </div>
+                        <div>
+                            <label for="interest" class="block text-sm font-medium text-gray-300 mb-1">Interest</label>
+                            <select id="interest" class="input-field w-full px-4 py-3 rounded-md">
+                                <option value="">Select an option</option>
+                                <option value="contract">Contract Analysis</option>
+                                <option value="compliance">Regulatory Compliance</option>
+                                <option value="ethics">Ethical Impact</option>
+                                <option value="enterprise">Enterprise Solution</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                            <textarea id="message" rows="4" class="input-field w-full px-4 py-3 rounded-md"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-accent hover:bg-darkblue text-white py-3 rounded-md font-medium transition duration-300">
+                            Request Demo
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:w-1/2">
+                    <div class="bg-secondary p-8 rounded-lg border border-gray-800 h-full">
+                        <h3 class="text-xl font-bold mb-6">Contact Information</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Location</h4>
+                                    <p class="text-gray-300">San Francisco, CA</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Email</h4>
+                                    <p class="text-gray-300">contact@focalquantai.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Phone</h4>
+                                    <p class="text-gray-300">+1 (415) 555-0199</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Support Hours</h4>
+                                    <p class="text-gray-300">Monday - Friday: 9AM - 6PM PST</p>
+                                    <p class="text-gray-300 text-sm">Enterprise: 24/7</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-accent text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl">Focal<span
+                                class="gradient-text">Quant</span>AI</span>
+                    </div>
+                    <p class="text-gray-400 max-w-xs">
+                        Advanced AI solutions for legal and ethical compliance.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#overview" class="text-gray-400 hover:text-accent">Overview</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-accent">Features</a></li>
+                            <li><a href="#integration" class="text-gray-400 hover:text-accent">Integration</a></li>
+                            <li><a href="#pricing" class="text-gray-400 hover:text-accent">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">API Reference</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Guides</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">About</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Privacy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Focal Quant AI. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
