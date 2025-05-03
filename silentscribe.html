@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Scribe AI | <span class="company-name"></span></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#1e293b',
+                        accent: '#3b82f6',
+                        darkblue: '#1e40af',
+                        code: '#0ea5e9',
+                        terminal: '#0d1117'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['Fira Code', 'monospace']
+                    },
+                    boxShadow: {
+                        'code': '0 10px 15px -3px rgba(59, 130, 246, 0.3)',
+                        'terminal': '0 0 15px rgba(59, 130, 246, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal {
+            background-color: #0d1117;
+            border: 1px solid #1e40af;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .terminal-header {
+            background-color: #1e293b;
+            border-bottom: 1px solid #1e40af;
+        }
+
+        .terminal-body {
+            background-color: #0d1117;
+        }
+
+        .prompt {
+            color: #3b82f6;
+        }
+
+        .command {
+            color: #0ea5e9;
+        }
+
+        .response {
+            color: #f8fafc;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .input-field {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .glow {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center">
+                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
+                            <span class="text-white font-bold text-xl"><span class="company-name"></span><span
+                                    class="gradient-text"></span></span>
+                        </div>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#overview"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Overview</a>
+                        <a href="#features"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Features</a>
+                        <a href="#technology"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Technology</a>
+                        <a href="#pricing"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Pricing</a>
+                        <a href="#contact"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="hidden md:ml-4 md:flex md:items-center">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Overview</a>
+                <a href="#features"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Features</a>
+                <a href="#technology"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Technology</a>
+                <a href="#pricing"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Pricing</a>
+                <a href="#contact"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
+                <div class="mt-4 px-3">
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="overview" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div class="inline-block bg-darkblue/20 text-accent px-3 py-1 rounded-full text-xs font-medium mb-4">
+                    <i class="fas fa-pen-fancy mr-1"></i> AI Ghostwriting & Editorial
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    <span class="gradient-text glow">Silent Scribe AI</span><br>
+                    Advanced AI Ghostwriting
+                </h1>
+                <p class="text-lg text-gray-300 mb-8">
+                    <span class="company-name"></span>'s Silent Scribe AI offers advanced ghostwriting and editorial
+                    services powered by generative AI.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-6 py-3 rounded-md font-medium transition duration-300">
+                        Start Now <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button
+                        class="border border-accent text-accent hover:bg-secondary px-6 py-3 rounded-md font-medium transition duration-300">
+                        View API Docs
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-10">
+                <div class="terminal rounded-lg overflow-hidden">
+                    <div class="terminal-header flex items-center px-4 py-2">
+                        <div class="flex space-x-2 mr-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-gray-300 text-sm font-mono">
+                            terminal ~/silent-scribe/generate
+                        </div>
+                    </div>
+                    <div class="terminal-body p-4">
+                        <div class="mb-2">
+                            <span class="prompt font-mono">$</span>
+                            <span class="command font-mono">silent-scribe generate --topic="AI in healthcare"
+                                --style=academic</span>
+                        </div>
+                        <div class="response font-mono text-sm mb-4">
+                            <div class="text-green-400 mb-1">[INFO] Generating content on: AI in healthcare</div>
+                            <div class="text-blue-300 mb-1">[PROCESSING] Adapting to academic style...</div>
+                            <div class="text-green-400 mb-1">[SUCCESS] Generation complete in 2.5s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Key <span class="gradient-text">Features</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Explore the advanced capabilities of Silent Scribe AI.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Context-Aware Generation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Generate content that is relevant and accurate to the given context.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Deep contextual understanding</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Seamlessly integrates with existing content</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            silent-scribe generate --context=previous-work.txt
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Style and Tone Adaptation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Adapt to various writing styles and tones, from academic to casual.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Customizable writing style settings</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Adapts tone to target audience</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            silent-scribe style --style=persuasive --tone=enthusiastic
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card bg-primary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Multi-Format Output</h3>
+                    <p class="text-gray-300 mb-4">
+                        Export content in multiple formats, including TXT, DOCX, and PDF.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Versatile file format support</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Easy export and sharing options</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <div class="text-xs text-gray-500 font-mono bg-gray-900 px-2 py-1 rounded inline-block">
+                            silent-scribe export --format=docx
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Advanced <span class="gradient-text">Technology</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Powered by state-of-the-art AI models.
+                </p>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <div class="bg-secondary p-6 rounded-lg border border-gray-800">
+                        <h3 class="text-xl font-bold mb-4">Core Technologies</h3>
+                        <div class="space-y-6">
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Generative AI</h4>
+                                        <p class="text-gray-400 text-sm">Advanced neural networks for content creation
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">NLP</h4>
+                                        <p class="text-gray-400 text-sm">Natural language processing for context
+                                            understanding</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-primary p-4 rounded border border-gray-800">
+                                <div class="flex items-start">
+                                    <div class="text-accent mr-4 mt-1">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">Multi-Format Export</h4>
+                                        <p class="text-gray-400 text-sm">Seamless content export in various file
+                                            formats</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <div class="code-block p-6 rounded-lg h-full">
+                        <div class="flex mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <pre class="text-gray-100 overflow-x-auto"><code class="language-python"># Example usage of Silent Scribe AI API
+from silent_scribe import ScribeClient
+
+client = ScribeClient(api_key="YOUR_API_KEY")
+
+# Generate text with specified topic and style
+result = client.generate(topic="Quantum Computing", style="technical", output_format="docx")
+
+# Adapt the tone of existing text
+adapted_text = client.adapt_tone(text="...", tone="academic")
+
+# Export the content in a desired format
+client.export(content="...", format="pdf", filename="output")</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Flexible <span class="gradient-text">Pricing</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Choose the plan that fits your needs.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Basic</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $99<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>10,000 words/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Basic style and tone</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Priority support</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-gray-600 mr-2"></i>
+                            <span>Multi-format export</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="bg-primary p-8 rounded-lg border-2 border-accent relative">
+                    <div
+                        class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl rounded-tr">
+                        POPULAR
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Professional</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        $299<span class="text-lg text-gray-400">/mo</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>50,000 words/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Advanced style and tone</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Multi-format export</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="bg-primary p-8 rounded-lg border border-gray-800">
+                    <h3 class="text-xl font-bold mb-4">Enterprise</h3>
+                    <div class="text-3xl font-bold mb-6">
+                        Custom
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Unlimited words/month</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Customizable AI models</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>24/7 dedicated support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            <span>Multi-format export</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full border border-accent text-accent hover:bg-secondary py-2 rounded-md font-medium transition duration-300">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gradient-to-r from-blue-900/30 to-primary">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Content?</h2>
+            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                Let Silent Scribe AI be your writing partner.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button
+                    class="bg-accent hover:bg-darkblue text-white px-8 py-3 rounded-md font-medium transition duration-300">
+                    Start Now
+                </button>
+                <button
+                    class="border border-accent text-accent hover:bg-secondary px-8 py-3 rounded-md font-medium transition duration-300">
+                    Request Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-secondary border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-accent text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl"><span class="company-name"></span><span
+                                class="gradient-text"></span></span>
+                    </div>
+                    <p class="text-gray-400 max-w-xs">
+                        <span class="company-slogan"></span>
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#overview" class="text-gray-400 hover:text-accent">Overview</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-accent">Features</a></li>
+                            <li><a href="#technology" class="text-gray-400 hover:text-accent">Technology</a></li>
+                            <li><a href="#pricing" class="text-gray-400 hover:text-accent">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">API Reference</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Case Studies</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">About</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Privacy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; <span class="copyright-year"></span> <span class="company-name"></span>. All rights
+                    reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-accent">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
