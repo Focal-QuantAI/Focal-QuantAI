@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocalQuantAI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center">
+                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
+                            <span class="text-white font-bold text-xl">
+                                <span
+                                    class="company-name">Focal<span class="gradient-text">Quant</span>AI</span>
+                            </span></span>
+                        </div>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#home"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Home</a>
+                        <a href="#about"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#services"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Services</a>
+                        <a href="#products"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Products</a>
+                        <a href="#contact"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
+                        <a href="https://blog.focalquantai.com" target="_blank"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Blog</a>
+                    </div>
+                </div>
+                <div class="hidden md:ml-4 md:flex md:items-center">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Home</a>
+                <a href="#about"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">About</a>
+                <a href="#services"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Services</a>
+                <a href="#products"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Products</a>
+                <a href="#contact"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
+                <a href="https://blog.focalquantai.com" target="_blank"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Blog</a>
+                <div class="mt-4 px-3">
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="script.js"></script>
+</body>
+</html>

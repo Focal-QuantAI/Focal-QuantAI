@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,74 +12,7 @@
 </head>
 
 <body class="min-h-screen">
-    <!-- Navigation -->
-    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <div class="flex items-center">
-                            <img src="/logo.png" alt="Logo" class="h-10 w-10 mr-1">
-                            <span class="text-white font-bold text-xl">
-                                Focal <span class="gradient-text">Quant</span> AI
-                            </span></span>
-                        </div>
-                    </div>
-                    <div class="hidden md:ml-10 md:flex md:space-x-8">
-                        <a href="#home"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Home</a>
-                        <a href="#about"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">About</a>
-                        <a href="#services"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Services</a>
-                        <a href="#products"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Products</a>
-                        <a href="#contact"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
-                        <a href="https://blog.focalquantai.com" target="_blank"
-                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Blog</a>
-                    </div>
-                </div>
-                <div class="hidden md:ml-4 md:flex md:items-center">
-                    <button
-                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Get Started
-                    </button>
-                </div>
-                <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" id="mobile-menu-button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Home</a>
-                <a href="#about"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">About</a>
-                <a href="#services"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Services</a>
-                <a href="#products"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Products</a>
-                <a href="#contact"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
-                <a href="https://blog.focalquantai.com" target="_blank"
-                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Blog</a>
-                <div class="mt-4 px-3">
-                    <button
-                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Get Started
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {% include _includes/navigation.html %}
 
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -444,7 +378,9 @@ while trading_hours:
                         <div class="bg-darkblue p-3 rounded-lg mr-4">
                             <i class="fas fa-balance-scale text-white text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold">AI-LERS</h3>
+                        <a href="ailers.html">
+                            <h3 class="text-xl font-bold">AI-LERS</h3>
+                        </a>
                     </div>
                     <p class="text-gray-300 mb-4">
                         AI Legal and Ethical Review System that automates compliance checks and risk assessments using
@@ -475,7 +411,9 @@ while trading_hours:
                         <div class="bg-darkblue p-3 rounded-lg mr-4">
                             <i class="fas fa-share-alt text-white text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Socius AI</h3>
+                        <a href="sociusai.html">
+                            <h3 class="text-xl font-bold">Socius AI</h3>
+                        </a>
                     </div>
                     <p class="text-gray-300 mb-4">
                         AI-powered social media management platform that optimizes content strategy and engagement using
@@ -506,7 +444,9 @@ while trading_hours:
                         <div class="bg-darkblue p-3 rounded-lg mr-4">
                             <i class="fas fa-pen-fancy text-white text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Silent Scribe AI</h3>
+                        <a href="silentscribe.html">
+                            <h3 class="text-xl font-bold">Silent Scribe AI</h3>
+                        </a>
                     </div>
                     <p class="text-gray-300 mb-4">
                         Advanced generative AI system for professional writing, editing, and content creation with
@@ -645,18 +585,22 @@ while trading_hours:
                         <div class="mt-8">
                             <h3 class="text-xl font-bold mb-4">Follow Us</h3>
                             <div class="flex space-x-4">
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="twitter">
-                                    <i class="fab fa-twitter text-xl"></i>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span
+                                        class="twitter">
+                                        <i class="fab fa-twitter text-xl"></i>
                                     </span>
                                 </a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="linkedin">
-                                    <i class="fab fa-linkedin text-xl"></i>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span
+                                        class="linkedin">
+                                        <i class="fab fa-linkedin text-xl"></i>
                                     </span></a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="github">
-                                    <i class="fab fa-github text-xl"></i>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span
+                                        class="github">
+                                        <i class="fab fa-github text-xl"></i>
                                     </span></a>
-                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span class="medium">
-                                    <i class="fab fa-medium text-xl"></i>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300"><span
+                                        class="medium">
+                                        <i class="fab fa-medium text-xl"></i>
                                 </a>
                             </div>
                         </div>
@@ -665,75 +609,77 @@ while trading_hours:
             </div>
         </div>
     </section>
-
     <!-- Footer -->
-    <footer class="bg-secondary border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-white text-lg font-semibold mb-4"><span class="company-name"></span></h3>
-                    <p class="text-gray-400 text-sm">
-                        Advanced AI solutions for algorithmic trading and business transformation.
+    <footer class="bg-secondary border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-accent text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl"><span class="company-name">Focal<span
+                                    class="gradient-text">Quant</span>AI</span></span>
+                    </div>
+                    <p class="text-gray-400 max-w-xs"><span class="company-slogan">
+                            Advanced AI solutions for legal and ethical compliance.
                     </p>
                 </div>
-
-                <div>
-                    <h3 class="text-white text-lg font-semibold mb-4">Services</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">AI
-                                Trading</a></li>
-                        <li><a href="#"
-                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Backtesting</a>
-                        </li>
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Pattern
-                                Recognition</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">AI
-                                Training</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-white text-lg font-semibold mb-4">Products</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#"
-                                class="text-gray-400 hover:text-accent text-sm transition duration-300">AI-LERS</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Socius
-                                AI</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Silent
-                                Scribe AI</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-white text-lg font-semibold mb-4">Company</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">About
-                                Us</a></li>
-                        <li><a href="#"
-                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Careers</a></li>
-                        <li><a href="https://blog.focalquantai.com" target="_blank"
-                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Blog</a></li>
-                        <li><a href="#"
-                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Contact</a></li>
-                    </ul>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Product</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#overview" class="text-gray-400 hover:text-accent">Overview</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-accent">Features</a></li>
+                            <li><a href="#integration" class="text-gray-400 hover:text-accent">Integration</a></li>
+                            <li><a href="#pricing" class="text-gray-400 hover:text-accent">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">API Reference</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Guides</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-4">Company</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-accent">About</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Privacy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-accent">Terms</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                    &copy; 2025</span> <span class="company-name"></span>. All rights reserved.
+                    &copy; <span class="copyright-year">2025</span> <span class="company-name">Focal Quant AI</span>.
+                    All rights reserved.
                 </p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Privacy
-                        Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Terms of
-                        Service</a>
-                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Cookies</a>
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="twitter">
+                            <i class="fab fa-twitter"></i>
+                        </span></a>
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </span></a>
+                    <a href="#" class="text-gray-400 hover:text-accent"><span class="github">
+                            <i class="fab fa-github"></i>
+                        </span></a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 
