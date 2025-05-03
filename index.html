@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focal Quant AI | Advanced AI Solutions for Algorithmic Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#1e293b',
+                        accent: '#3b82f6',
+                        darkblue: '#1e40af',
+                        code: '#0ea5e9'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+        }
+
+        .product-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .input-field {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-primary border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center">
+                            <img src="logo.png" alt="Logo" class="h-8 w-8 mr-2">
+                            <span class="text-white font-bold text-xl">Focal<span
+                                    class="gradient-text">Quant</span>AI</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#home"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Home</a>
+                        <a href="#about"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#services"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Services</a>
+                        <a href="#products"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Products</a>
+                        <a href="#contact"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Contact</a>
+                        <a href="https://blog.focalquantai.com" target="_blank"
+                            class="nav-link text-gray-300 hover:text-accent px-3 py-2 text-sm font-medium">Blog</a>
+                    </div>
+                </div>
+                <div class="hidden md:ml-4 md:flex md:items-center">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Home</a>
+                <a href="#about"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">About</a>
+                <a href="#services"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Services</a>
+                <a href="#products"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Products</a>
+                <a href="#contact"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Contact</a>
+                <a href="https://blog.focalquantai.com" target="_blank"
+                    class="nav-link block px-3 py-2 text-base font-medium text-gray-300 hover:text-accent">Blog</a>
+                <div class="mt-4 px-3">
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    <span class="gradient-text">Algorithmic Trading</span><br>
+                    Powered by Advanced AI
+                </h1>
+                <p class="text-lg text-gray-300 mb-8">
+                    Leverage cutting-edge machine learning and pattern recognition to optimize your trading strategies
+                    with sub-second precision.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button
+                        class="bg-accent hover:bg-darkblue text-white px-6 py-3 rounded-md font-medium transition duration-300">
+                        Explore Services <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button
+                        class="border border-accent text-accent hover:bg-secondary px-6 py-3 rounded-md font-medium transition duration-300">
+                        View Products
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-10">
+                <div class="code-block p-6 rounded-lg">
+                    <div class="flex mb-4">
+                        <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <pre class="text-gray-100 overflow-x-auto"><code class="language-python">
+# AI-powered trading strategy
+import numpy as np
+from focalquant import AIEngine
+
+# Initialize AI trading model
+model = AIEngine(
+    framework="tensorflow",
+    architecture="transformer",
+    precision=0.001  # 1ms execution
+)
+
+# Load market data
+market_data = load_ticks(
+    symbols=["AAPL", "MSFT", "GOOGL"],
+    interval="1s",
+    lookback="30d"
+)
+
+# Generate predictions
+predictions = model.predict(
+    data=market_data,
+    strategy="mean_reversion"
+)
+
+# Execute optimized trades
+execute_trades(predictions)
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">About <span class="gradient-text">Focal Quant AI</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    We are at the forefront of AI-driven quantitative finance, developing sophisticated algorithms that
+                    identify and capitalize on market inefficiencies with unprecedented speed and accuracy.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-primary p-6 rounded-lg border border-gray-800">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Research</h3>
+                    <p class="text-gray-300">
+                        Our team of PhD researchers continuously develops novel machine learning architectures
+                        specifically optimized for financial time series analysis.
+                    </p>
+                </div>
+
+                <div class="bg-primary p-6 rounded-lg border border-gray-800">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Quantitative Expertise</h3>
+                    <p class="text-gray-300">
+                        Decades of combined experience in algorithmic trading, statistical arbitrage, and high-frequency
+                        trading strategies.
+                    </p>
+                </div>
+
+                <div class="bg-primary p-6 rounded-lg border border-gray-800">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Infrastructure</h3>
+                    <p class="text-gray-300">
+                        Ultra-low latency execution systems deployed in co-located data centers with direct market
+                        access to major exchanges.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-16 bg-primary p-8 rounded-lg border border-gray-800">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0">
+                        <h3 class="text-2xl font-bold mb-4">Our <span class="gradient-text">Technology Stack</span></h3>
+                        <p class="text-gray-300 mb-6">
+                            We combine cutting-edge AI frameworks with high-performance computing to deliver results
+                            that outperform traditional quantitative methods.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span class="text-gray-300">Deep Reinforcement Learning for strategy optimization</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span class="text-gray-300">Transformer architectures for market sentiment
+                                    analysis</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-accent mr-2"></i>
+                                <span class="text-gray-300">C++/Python hybrid execution engines</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2 md:pl-8">
+                        <div class="code-block p-6 rounded-lg">
+                            <div class="flex mb-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <pre class="text-gray-100 overflow-x-auto"><code class="language-python">
+# Multi-model ensemble trading strategy
+from focalquant import EnsembleModel
+
+models = [
+    ("LSTM", load_model("lstm_v5.h5")),
+    ("Transformer", load_model("transformer_v3.h5")),
+    ("GradientBoosting", load_model("xgb_v7.pkl"))
+]
+
+ensemble = EnsembleModel(models)
+ensemble.train(training_data)
+
+# Real-time prediction with 100ms refresh
+while trading_hours:
+    latest_data = get_market_data()
+    prediction = ensemble.predict(latest_data)
+    execute_strategy(prediction)
+    time.sleep(0.1)
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Our <span class="gradient-text">AI Services</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Specialized AI solutions designed to give you the competitive edge in today's algorithmic trading
+                    landscape.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Primary Services -->
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-search-chart"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Pattern Recognition</h3>
+                    <p class="text-gray-300 mb-4">
+                        Advanced ML models that identify complex market patterns across multiple timeframes and
+                        instruments.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Multi-instrument correlation analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Non-linear pattern detection</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Real-time anomaly detection</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI/ML Trading</h3>
+                    <p class="text-gray-300 mb-4">
+                        Custom machine learning models trained on your specific trading objectives and risk parameters.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Reinforcement learning for strategy optimization</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Neural networks for price prediction</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Sentiment analysis from alternative data</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Backtesting</h3>
+                    <p class="text-gray-300 mb-4">
+                        Comprehensive backtesting services with tick-level precision to validate your strategies.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>1-second interval historical testing</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Monte Carlo simulation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Slippage and commission modeling</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Other Services -->
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Business Transformation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Agentic AI systems that autonomously optimize your business processes and decision-making.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Process automation with AI agents</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Dynamic resource allocation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Predictive analytics for operations</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Training</h3>
+                    <p class="text-gray-300 mb-4">
+                        Customized training programs to upskill your team in practical AI/ML applications for finance.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Hands-on ML for trading workshops</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Custom curriculum development</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Ongoing mentorship programs</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="service-card bg-secondary p-6 rounded-lg border border-gray-800 transition duration-300">
+                    <div class="text-accent text-3xl mb-4">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Consultations</h3>
+                    <p class="text-gray-300 mb-4">
+                        Expert guidance on implementing AI solutions tailored to your specific business challenges.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Project scoping and architecture</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Model selection and optimization</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-circle text-xs mt=1 mr-2 text-accent"></i>
+                            <span>Implementation roadmap</span>
+                        </li>
+                    </ul>
+                    <button class="text-accent text-sm font-medium flex items-center mt-2">
+                        Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Our <span class="gradient-text">AI Products</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Ready-to-deploy AI solutions that solve critical business challenges across multiple domains.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="product-card p-6 rounded-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-darkblue p-3 rounded-lg mr-4">
+                            <i class="fas fa-balance-scale text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">AI-LERS</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        AI Legal and Ethical Review System that automates compliance checks and risk assessments using
+                        natural language processing.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Automated contract analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Regulatory compliance monitoring</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Ethical impact assessments</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Request Demo
+                    </button>
+                </div>
+
+                <div class="product-card p-6 rounded-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-darkblue p-3 rounded-lg mr-4">
+                            <i class="fas fa-share-alt text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Socius AI</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        AI-powered social media management platform that optimizes content strategy and engagement using
+                        predictive analytics.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Optimal posting schedule prediction</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Content performance forecasting</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Automated engagement analysis</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Request Demo
+                    </button>
+                </div>
+
+                <div class="product-card p-6 rounded-lg transition duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-darkblue p-3 rounded-lg mr-4">
+                            <i class="fas fa-pen-fancy text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Silent Scribe AI</h3>
+                    </div>
+                    <p class="text-gray-300 mb-4">
+                        Advanced generative AI system for professional writing, editing, and content creation with
+                        human-like quality.
+                    </p>
+                    <ul class="text-gray-400 text-sm space-y-2 mb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Context-aware content generation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Style and tone adaptation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-xs mt-1 mr-2 text-accent"></i>
+                            <span>Multi-format output (reports, articles, etc.)</span>
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-accent hover:bg-darkblue text-white py-2 rounded-md font-medium transition duration-300">
+                        Request Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Get in <span class="gradient-text">Touch</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Ready to transform your business with AI? Contact our team to discuss how we can help.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first-name" class="block text-sm font-medium text-gray-300 mb-1">First
+                                    Name</label>
+                                <input type="text" id="first-name" class="input-field w-full px-4 py-3 rounded-md">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-medium text-gray-300 mb-1">Last
+                                    Name</label>
+                                <input type="text" id="last-name" class="input-field w-full px-4 py-3 rounded-md">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="email" class="input-field w-full px-4 py-3 rounded-md">
+                        </div>
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-300 mb-1">Company</label>
+                            <input type="text" id="company" class="input-field w-full px-4 py-3 rounded-md">
+                        </div>
+                        <div>
+                            <label for="interest" class="block text-sm font-medium text-gray-300 mb-1">Interest</label>
+                            <select id="interest" class="input-field w-full px-4 py-3 rounded-md">
+                                <option value="">Select an option</option>
+                                <option value="trading">AI Trading Services</option>
+                                <option value="backtesting">Backtesting Services</option>
+                                <option value="training">AI Training</option>
+                                <option value="consulting">AI Consulting</option>
+                                <option value="ai-lers">AI-LERS</option>
+                                <option value="socius">Socius AI</option>
+                                <option value="scribe">Silent Scribe AI</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                            <textarea id="message" rows="4" class="input-field w-full px-4 py-3 rounded-md"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-accent hover:bg-darkblue text-white py-3 rounded-md font-medium transition duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:w-1/2">
+                    <div class="bg-secondary p-8 rounded-lg border border-gray-800 h-full">
+                        <h3 class="text-xl font-bold mb-6">Contact Information</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Location</h4>
+                                    <p class="text-gray-300">San Francisco, CA</p>
+                                    <p class="text-gray-300">New York, NY</p>
+                                    <p class="text-gray-300">London, UK</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Email</h4>
+                                    <p class="text-gray-300">contact@focalquantai.com</p>
+                                    <p class="text-gray-300">support@focalquantai.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Phone</h4>
+                                    <p class="text-gray-300">+1 (415) 555-0199</p>
+                                    <p class="text-gray-300">+44 20 7993 8012</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="text-accent text-xl mr-4 mt-1">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Hours</h4>
+                                    <p class="text-gray-300">Monday - Friday: 9am - 6pm</p>
+                                    <p class="text-gray-300">Saturday - Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <h3 class="text-xl font-bold mb-4">Follow Us</h3>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    <i class="fab fa-twitter text-xl"></i>
+                                </a>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    <i class="fab fa-linkedin text-xl"></i>
+                                </a>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    <i class="fab fa-github text-xl"></i>
+                                </a>
+                                <a href="#" class="text-gray-400 hover:text-accent transition duration-300">
+                                    <i class="fab fa-medium text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Focal Quant AI</h3>
+                    <p class="text-gray-400 text-sm">
+                        Advanced AI solutions for algorithmic trading and business transformation.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">AI
+                                Trading</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Backtesting</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Pattern
+                                Recognition</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">AI
+                                Training</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Products</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-accent text-sm transition duration-300">AI-LERS</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Socius
+                                AI</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Silent
+                                Scribe AI</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">About
+                                Us</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Careers</a></li>
+                        <li><a href="https://blog.focalquantai.com" target="_blank"
+                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Blog</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-accent text-sm transition duration-300">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Focal Quant AI. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Privacy
+                        Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Terms of
+                        Service</a>
+                    <a href="#" class="text-gray-400 hover:text-accent text-sm transition duration-300">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Add shadow to navbar on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+
+</html>
