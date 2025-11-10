@@ -1,413 +1,752 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focal QuantAI - Coming Soon</title>
+    <title>Focal QuantAI - Evolving Algorithmic Trading</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Courier New', monospace;
-            background: #000;
-            color: #00ff00;
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #f0f0f0;
             overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
         }
 
-        .matrix-bg {
+        /* Custom green color */
+        .text-custom-green {
+            color: #00ff99;
+        }
+
+        .bg-custom-green {
+            background-color: #00ff99;
+        }
+
+        .border-custom-green {
+            border-color: #00ff99;
+        }
+
+        .accent-custom-green {
+            accent-color: #00ff99;
+        }
+
+        /* Faint glow effect for text and buttons */
+        .glow-effect {
+            text-shadow: 0 0 8px rgba(0, 255, 153, 0.3);
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2), 0 0 5px rgba(0, 255, 153, 0.1) inset;
+        }
+
+        /* Canvas for background animation */
+        #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             opacity: 0.3;
         }
 
-        .stock-ticker {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            z-index: 1;
+        /* Ensure content is above canvas */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
         }
 
-        .ticker-content {
+        /* --- OHLC Visualization Styles --- */
+        #ohlc-visualizer {
+            pointer-events: none;
+            /* Allows clicks to pass through to elements below */
+        }
+
+        #candle-track {
             display: flex;
-            animation: scroll 30s linear infinite;
-            white-space: nowrap;
+            align-items: flex-end;
+            /* Candles start from the bottom */
+            height: 100%;
+            transform: translateX(0);
+            transition: none;
+            will-change: transform;
         }
 
-        .ticker-item {
-            margin-right: 50px;
-            font-size: 14px;
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
-        }
-
-        .ticker-item.negative {
-            color: #ff0040;
-            text-shadow: 0 0 10px #ff0040;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .container {
-            min-height: 100vh;
+        .candle-bar {
+            width: 16px;
+            /* Width of the entire candle unit */
+            padding: 0 2px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
         }
 
-        .logo {
-            margin-bottom: 30px;
-            text-align: center;
+        .candle-wick {
+            width: 1px;
         }
 
-        .logo h1 {
-            font-size: 4rem;
-            font-weight: bold;
-            text-shadow: 0 0 20px #00ff00;
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 10px;
+        .candle-body {
+            width: 8px;
+            border-radius: 1px;
         }
 
-        .logo .tagline {
-            font-size: 1.2rem;
-            color: #40ff40;
-            text-shadow: 0 0 10px #40ff40;
-            letter-spacing: 2px;
+        /* Bullish (Green) - Open is below Close */
+        .bullish .candle-body {
+            background-color: #00ff99;
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 20px #00ff00; }
-            to { text-shadow: 0 0 30px #00ff00, 0 0 40px #00ff00; }
+        .bullish .candle-wick {
+            background-color: #00ff99;
         }
 
-        .loading-section {
-            width: 100%;
-            max-width: 600px;
-            margin: 40px 0;
-            text-align: center;
+        /* Bearish (Red) - Open is above Close */
+        .bearish .candle-body {
+            background-color: #ff3366;
         }
 
-        .loading-text {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
+        .bearish .candle-wick {
+            background-color: #ff3366;
         }
 
-        .loading-bar-container {
-            width: 100%;
-            height: 20px;
-            background: #001100;
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 20px #00ff00;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff00, #40ff40, #00ff00);
-            width: 0%;
-            transition: width 0.5s ease;
-            position: relative;
-            box-shadow: 0 0 20px #00ff00;
+        ::-webkit-scrollbar-track {
+            background: #111;
         }
 
-        .loading-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
+        ::-webkit-scrollbar-thumb {
+            background: #00ff99;
+            border-radius: 4px;
         }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-text {
-            margin-top: 15px;
-            font-size: 1.1rem;
-            color: #40ff40;
-            text-shadow: 0 0 8px #40ff40;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            max-width: 800px;
-            margin: 40px 0;
-        }
-
-        .feature {
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #00ff00;
-            border-radius: 10px;
-            background: rgba(0, 255, 0, 0.05);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-        }
-
-        .feature h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #00ff00;
-        }
-
-        .feature p {
-            color: #40ff40;
-            font-size: 0.9rem;
-        }
-
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            color: #40ff40;
-            font-size: 0.9rem;
-        }
-
-        .matrix-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .matrix-column {
-            position: absolute;
-            top: -100%;
-            font-size: 20px;
-            color: #00ff00;
-            animation: matrix-fall linear infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes matrix-fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-
-        .chart-background {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 50%;
-            height: 40%;
-            z-index: -1;
-            opacity: 0.1;
-        }
-
-        @media (max-width: 768px) {
-            .logo h1 {
-                font-size: 2.5rem;
-            }
-            
-            .logo .tagline {
-                font-size: 1rem;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc7a;
         }
     </style>
 </head>
-<body>
-    <div class="matrix-bg">
-        <div class="matrix-rain" id="matrixRain"></div>
+
+<body class="bg-black">
+    <!-- Animated Background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Main Content Wrapper -->
+    <div class="content-wrapper">
+
+        <!-- Header / Navigation -->
+        <header class="sticky top-0 z-50 w-full bg-black/70 backdrop-blur-md border-b border-gray-800/50">
+            <nav class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <a href="#" class="flex items-center space-x-2">
+                        <!-- Simple abstract logo -->
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="text-custom-green">
+                            <path
+                                d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                                stroke="#00ff99" stroke-width="2" stroke-miterlimit="10" />
+                            <path
+                                d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                                stroke="#00ff99" stroke-width="2" stroke-miterlimit="10" />
+                            <path d="M9.17188 14.8284L5.63604 18.3642" stroke="#00ff99" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M18.364 5.63603L14.8281 9.17187" stroke="#00ff99" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="text-2xl font-bold text-white glow-effect">Focal <span
+                                class="text-custom-green">QuantAI</span></span>
+                    </a>
+
+                    <!-- Desktop Nav -->
+                    <div class="hidden md:flex md:items-center md:space-x-6">
+                        <a href="#about" class="text-gray-300 hover:text-custom-green transition duration-300">About</a>
+                        <a href="#philosophy"
+                            class="text-gray-300 hover:text-custom-green transition duration-300">Philosophy</a>
+                        <a href="#products"
+                            class="text-gray-300 hover:text-custom-green transition duration-300">Products</a>
+                        <a href="#contact"
+                            class="text-gray-300 hover:text-custom-green transition duration-300">Contact</a>
+                        <button
+                            class="modal-open bg-custom-green text-black font-semibold px-5 py-2 rounded-md hover:bg-white btn-glow transition duration-300">
+                            Join Waitlist
+                        </button>
+                    </div>
+
+                    <!-- Mobile Nav Toggle (Hamburger) -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-gray-300 hover:text-custom-green">
+                            <!-- Menu Icon -->
+                            <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                            <!-- Close Icon -->
+                            <svg id="x-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 bg-black/90">
+                <a href="#about"
+                    class="block text-gray-300 hover:text-custom-green transition duration-300 py-2">About</a>
+                <a href="#philosophy"
+                    class="block text-gray-300 hover:text-custom-green transition duration-300 py-2">Philosophy</a>
+                <a href="#products"
+                    class="block text-gray-300 hover:text-custom-green transition duration-300 py-2">Products</a>
+                <a href="#contact"
+                    class="block text-gray-300 hover:text-custom-green transition duration-300 py-2">Contact</a>
+                <button
+                    class="modal-open w-full bg-custom-green text-black font-semibold px-5 py-2 rounded-md hover:bg-white btn-glow transition duration-300 mt-2">
+                    Join Waitlist
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section
+                class="min-h-screen relative flex flex-col items-center justify-center text-center px-4 pt-16 pb-20 sm:pt-24 sm:pb-28">
+
+                <!-- OHLC Visualization Background (Z-index 15) -->
+                <div id="ohlc-visualizer"
+                    class="absolute inset-x-0 bottom-0 top-[20%] opacity-20 overflow-hidden z-15 pointer-events-none">
+                    <div id="candle-track" class="flex items-end h-full">
+                        <!-- Candles will be appended here by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Main Text Content (Z-index 20) -->
+                <div class="max-w-4xl relative z-20">
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight">
+                        Evolving the Future of
+                        <span class="block text-custom-green glow-effect mt-2 sm:mt-4">Algorithmic Trading</span>
+                    </h1>
+                    <p class="mt-6 text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+                        We are a deep research organization of AI and ML scientists defining the next generation of
+                        quantitative strategies built to last.
+                    </p>
+                    <div
+                        class="mt-10 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <a href="#philosophy"
+                            class="bg-custom-green text-black font-semibold px-8 py-3 rounded-md text-lg hover:bg-white btn-glow transition duration-300 transform hover:scale-105">
+                            Our Philosophy
+                        </a>
+                        <button
+                            class="modal-open bg-transparent border-2 border-custom-green text-custom-green font-semibold px-8 py-3 rounded-md text-lg hover:bg-custom-green hover:text-black transition duration-300 transform hover:scale-105">
+                            Join Waitlist
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Us Section -->
+            <section id="about" class="py-20 sm:py-28 bg-black/80 backdrop-blur-sm">
+                <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <span class="text-custom-green font-semibold tracking-wide uppercase">Who We Are</span>
+                            <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-white">
+                                Research-First. Data-Driven.
+                            </h2>
+                            <p class="mt-6 text-lg text-gray-300">
+                                `Focal QuantAI` is a collective of AI and ML scientists dedicated to cutting-edge
+                                quantitative analysis and statistical benchmarking. Our mission is to design and develop
+                                algo trading strategies that not only perform but also <strong class="text-white">stand
+                                    the test of time and are true to their word.</strong>
+                            </p>
+                            <p class="mt-4 text-lg text-gray-300">
+                                We're not just building algorithms; we're building the systems that will define the
+                                future of trading.
+                            </p>
+                        </div>
+                        <!-- Simple visual element -->
+                        <div class="flex justify-center items-center">
+                            <div
+                                class="p-8 bg-gray-900/50 border border-green-700/50 rounded-xl shadow-2xl shadow-green-900/20">
+                                <!-- SVG Icon: CPU Chip -->
+                                <svg class="w-48 h-48 text-custom-green opacity-80" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5v1.5m5.25-1.5v1.5m3.75-1.5v1.5m-12.75-9 .75-.75 3 3 .75.75l3-3 .75-.75 3 3 .75.75-3 3-.75.75-3-3-.75-.75-3-3Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.25 7.5h.01M15.25 12h.01M15.25 16.5h.01M8.25 7.5h.01M8.25 12h.01M8.25 16.5h.01M12 7.5h.01M12 12h.01M12 16.5h.01M4.5 4.5v15h15v-15h-15Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Philosophy Section -->
+            <section id="philosophy" class="py-20 sm:py-28">
+                <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-custom-green font-semibold tracking-wide uppercase">Our Philosophy</span>
+                        <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-white">
+                            The Evolution of Quant
+                        </h2>
+                        <p class="mt-4 text-lg text-gray-300">
+                            Our approach is built on three pillars that merge deep research with dynamic, intelligent
+                            systems.
+                        </p>
+                    </div>
+
+                    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Pillar 1: AI & ML -->
+                        <div
+                            class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 transform transition duration-500 hover:scale-105 hover:border-custom-green/70 hover:shadow-2xl hover:shadow-green-900/30">
+                            <div
+                                class="inline-flex items-center justify-center w-12 h-12 bg-custom-green/20 text-custom-green rounded-lg">
+                                <!-- SVG Icon: CPU -->
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5v1.5m5.25-1.5v1.5m3.75-1.5v1.5m-12.75-9 .75-.75 3 3 .75.75l3-3 .75-.75 3 3 .75.75-3 3-.75.75-3-3-.75-.75-3-3Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.25 7.5h.01M15.25 12h.01M15.25 16.5h.01M8.25 7.5h.01M8.25 12h.01M8.25 16.5h.01M12 7.5h.01M12 12h.01M12 16.5h.01M4.5 4.5v15h15v-15h-15Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-6 text-2xl font-bold text-white">AI & Machine Learning</h3>
+                            <p class="mt-4 text-gray-300">
+                                We leverage state-of-the-art deep learning models to uncover complex patterns and
+                                signals that traditional analysis misses.
+                            </p>
+                        </div>
+
+                        <!-- Pillar 2: Deep Research -->
+                        <div
+                            class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 transform transition duration-500 hover:scale-105 hover:border-custom-green/70 hover:shadow-2xl hover:shadow-green-900/30">
+                            <div
+                                class="inline-flex items-center justify-center w-12 h-12 bg-custom-green/20 text-custom-green rounded-lg">
+                                <!-- SVG Icon: Beaker -->
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5.16 14.75m-.001 0a3.001 3.001 0 0 0 3.684 2.443l.309-.056m-4-2.387a3.001 3.001 0 0 1 2.98 2.659l.23 1.231c.11.603.668 1.002 1.28 1.002h3.666a1.28 1.28 0 0 0 1.279-1.002l.23-1.23c.11-.603.668-1.002 1.279-1.002h.31c1.093 0 1.913-.97 1.57-1.954l-.53-1.591a2.25 2.25 0 0 1-.66-1.591V3.104m-7.5 0h7.5M4.872 14.75a3.001 3.001 0 0 1 3.684 2.443l.309-.056m-4-2.387a3.001 3.001 0 0 0-2.98 2.659l-.23 1.231c-.11.603-.668 1.002-1.28 1.002H2.25a1.28 1.28 0 0 1-1.279-1.002l-.23-1.23A3.001 3.001 0 0 1 .51 14.75m14.24 0a3.001 3.001 0 0 0 3.684 2.443l.309-.056m-4-2.387a3.001 3.001 0 0 1 2.98 2.659l.23 1.231c.11.603.668 1.002 1.28 1.002h3.666a1.28 1.28 0 0 0 1.279-1.002l.23-1.23a3.001 3.001 0 0 0-2.98-2.659m-4.63 2.387a3.001 3.001 0 0 1-3.684 2.443l-.309-.056" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-6 text-2xl font-bold text-white">Deep Research</h3>
+                            <p class="mt-4 text-gray-300">
+                                Every strategy undergoes rigorous statistical benchmarking and out-of-sample testing to
+                                ensure robustness and integrity.
+                            </p>
+                        </div>
+
+                        <!-- Pillar 3: Evolution -->
+                        <div
+                            class="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 transform transition duration-500 hover:scale-105 hover:border-custom-green/70 hover:shadow-2xl hover:shadow-green-900/30">
+                            <div
+                                class="inline-flex items-center justify-center w-12 h-12 bg-custom-green/20 text-custom-green rounded-lg">
+                                <!-- SVG Icon: Chart Bar -->
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 0 1 9.75 19.875V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-6 text-2xl font-bold text-white">Market Evolution</h3>
+                            <p class="mt-4 text-gray-300">
+                                Markets change. Our strategies are designed to adapt and evolve, monitored by AI for
+                                regime shifts and model decay.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="py-20 sm:py-28 bg-black/80 backdrop-blur-sm">
+                <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <span class="text-custom-green font-semibold tracking-wide uppercase">Under Development</span>
+                        <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-white">
+                            Our Flagship Products
+                        </h2>
+                        <p class="mt-4 text-lg text-gray-300">
+                            Our research is coalescing into two next-generation platforms. Currently in advanced
+                            development.
+                        </p>
+                    </div>
+
+                    <div class="mt-16 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Product 1: Quant Shastrai -->
+                        <div class="relative bg-gray-900/70 border border-gray-700/50 rounded-xl p-8 overflow-hidden">
+                            <span
+                                class="absolute top-4 right-4 bg-custom-green/20 text-custom-green text-xs font-bold px-3 py-1 rounded-full">COMING
+                                SOON</span>
+                            <!-- SVG Icon: Layers -->
+                            <svg class="w-10 h-10 text-custom-green" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m6.75 7.5 3 2.25-3 2.25m3 0h3m-3 2.25 3 2.25 3-2.25m-3 2.25v-6.75l3 2.25-3 2.25M6.75 12l3-2.25 3 2.25m-3 2.25v6.75l3 2.25 3-2.25V13.5m-3-2.25L12 9l3 2.25m-3 2.25v6.75m3-6.75-3 2.25m3 2.25-3 2.25m3-2.25V15m-3 6.75 3-2.25-3-2.25" />
+                            </svg>
+                            <h3 class="mt-5 text-3xl font-bold text-white">Quant Shastrai</h3>
+                            <p class="mt-3 text-gray-300">
+                                A framework built on foundational principles (Shastras) of market dynamics, powered by
+                                AI to ensure long-term stability and adaptation.
+                            </p>
+                        </div>
+
+                        <!-- Product 2: Algomist -->
+                        <div class="relative bg-gray-900/70 border border-gray-700/50 rounded-xl p-8 overflow-hidden">
+                            <span
+                                class="absolute top-4 right-4 bg-custom-green/20 text-custom-green text-xs font-bold px-3 py-1 rounded-full">COMING
+                                SOON</span>
+                            <!-- SVG Icon: Plus Circle -->
+                            <svg class="w-10 h-10 text-custom-green" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            <h3 class="mt-5 text-3xl font-bold text-white">Algomist</h3>
+                            <p class="mt-3 text-gray-300">
+                                Transmuting raw, high-frequency data into algorithmic gold. This platform focuses on
+                                short-term alpha and tactical execution.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA / Contact Section -->
+            <section id="contact" class="py-20 sm:py-32 text-center">
+                <div class="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                        Get Notified of Our Launch
+                    </h2>
+                    <p class="mt-4 text-lg text-gray-300">
+                        Join the waitlist to get exclusive updates from our research team and be the first to know when
+                        `Quant Shastrai` and `Algomist` are live.
+                    </p>
+                    <button
+                        class="modal-open mt-10 bg-custom-green text-black font-semibold px-10 py-4 rounded-md text-lg hover:bg-white btn-glow transition duration-300 transform hover:scale-105">
+                        Join the Waitlist
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-green-700/30">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+                <!-- Updated Footer Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                    <!-- Logo and Info -->
+                    <div>
+                        <span class="text-lg font-bold text-white glow-effect">Focal <span
+                                class="text-custom-green">QuantAI</span></span>
+                        <p class="mt-2 text-sm text-gray-400">Defining the future of algo trading strategies.</p>
+                        <p class="mt-4 text-sm text-gray-400">
+                            <a href="https://focalquantai.in" target="_blank" rel="noopener noreferrer"
+                                class="hover:text-custom-green transition duration-300">https://focalquantai.in</a>
+                        </p>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="md:mx-auto">
+                        <h4 class="font-semibold text-white uppercase tracking-wider">Contact Us</h4>
+                        <div class="mt-4 space-y-2 text-sm">
+                            <p class="text-gray-400">
+                                <a href="mailto:contact@focalquantai.in"
+                                    class="hover:text-custom-green transition duration-300">contact@focalquantai.in</a>
+                            </p>
+                            <p class="text-gray-400">
+                                <a href="tel:+917799920600"
+                                    class="hover:text-custom-green transition duration-300">+91-7799920600</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Links -->
+                    <div class="md:ml-auto">
+                        <h4 class="font-semibold text-white uppercase tracking-wider">Legal</h4>
+                        <div class="mt-4 space-y-2 text-sm">
+                            <p><a href="#" class="text-gray-400 hover:text-custom-green transition duration-300">Privacy
+                                    Policy</a></p>
+                            <p><a href="#" class="text-gray-400 hover:text-custom-green transition duration-300">Terms
+                                    of Use</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Copyright -->
+                <div class="mt-8 pt-8 border-t border-gray-800/50 text-center text-sm text-gray-500">
+                    <p>&copy; 2025 Focal QuantAI. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <div class="stock-ticker">
-        <div class="ticker-content">
-            <span class="ticker-item">AAPL: $185.42 (+2.34%)</span>
-            <span class="ticker-item">GOOGL: $142.78 (+1.87%)</span>
-            <span class="ticker-item negative">TSLA: $248.91 (-0.92%)</span>
-            <span class="ticker-item">MSFT: $378.45 (+1.23%)</span>
-            <span class="ticker-item">NVDA: $891.23 (+4.56%)</span>
-            <span class="ticker-item negative">META: $324.12 (-1.45%)</span>
-            <span class="ticker-item">AMZN: $145.67 (+0.89%)</span>
-            <span class="ticker-item">SPY: $448.92 (+0.67%)</span>
-            <span class="ticker-item">QQQ: $392.15 (+1.12%)</span>
-            <span class="ticker-item negative">VIX: $18.94 (-2.34%)</span>
+    <!-- Modal -->
+    <div id="waitlist-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <!-- Modal Backdrop -->
+        <div class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+        <!-- Modal Content -->
+        <div
+            class="modal-container bg-gray-900 w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-green-900/30 z-50 overflow-y-auto border border-green-700/50">
+            <div class="relative p-8">
+                <!-- Close Button -->
+                <button
+                    class="modal-close-btn absolute top-4 right-4 text-gray-500 hover:text-custom-green transition duration-300">
+                    <!-- SVG Icon: X -->
+                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <div class="text-center">
+                    <!-- SVG Icon: Envelope Open -->
+                    <svg class="w-16 h-16 text-custom-green mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.477 3.632a2.25 2.25 0 0 1-2.18 0l-6.477-3.632A2.25 2.25 0 0 1 3 9.906V9a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21.75 9Z" />
+
+                    </svg>
+                    <h3 class="mt-4 text-2xl font-bold text-white">Join the Waitlist</h3>
+                    <p class="mt-2 text-gray-300">
+                        Be the first to get access to our research and product launches.
+                    </p>
+                </div>
+
+                <!-- Form -->
+                <form id="waitlist-form" class="mt-8 space-y-6">
+                    <div>
+                        <label for="name" class="text-sm font-medium text-gray-300">Full Name</label>
+                        <input type="text" id="name" name="name" required
+                            class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom-green focus:border-custom-green transition">
+                    </div>
+                    <div>
+                        <label for="email" class="text-sm font-medium text-gray-300">Email Address</label>
+                        <input type="email" id="email" name="email" required
+                            class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-custom-green focus:border-custom-green transition">
+                    </div>
+                    <div>
+                        <button type="submit"
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semibold text-black bg-custom-green hover:bg-white btn-glow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-custom-green transition duration-300">
+                            Notify Me
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Form Success/Error Message -->
+                <div id="form-message" class="hidden mt-6 text-center">
+                    <p class="text-custom-green font-semibold">Thank you! You're on the list.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="logo">
-            <h1>FOCAL QUANTAI</h1>
-            <p class="tagline">ALGORITHMIC TRADING & TRAINING</p>
-        </div>
-
-        <div class="loading-section">
-            <div class="loading-text">INITIALIZING QUANTUM ALGORITHMS...</div>
-            <div class="loading-bar-container">
-                <div class="loading-bar" id="loadingBar"></div>
-            </div>
-            <div class="progress-text" id="progressText">0%</div>
-        </div>
-
-        <div class="features">
-            <div class="feature">
-                <svg class="feature-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 80L40 60L60 70L80 20" stroke="#00ff00" stroke-width="3" fill="none"/>
-                    <circle cx="20" cy="80" r="3" fill="#00ff00"/>
-                    <circle cx="40" cy="60" r="3" fill="#00ff00"/>
-                    <circle cx="60" cy="70" r="3" fill="#00ff00"/>
-                    <circle cx="80" cy="20" r="3" fill="#00ff00"/>
-                    <path d="M10 90L90 90L90 10" stroke="#00ff00" stroke-width="2" fill="none"/>
-                </svg>
-                <h3>AI-Powered Analytics</h3>
-                <p>Advanced machine learning algorithms for market prediction and risk assessment</p>
-            </div>
-
-            <div class="feature">
-                <svg class="feature-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="10" y="10" width="80" height="80" stroke="#00ff00" stroke-width="2" fill="none"/>
-                    <path d="M30 30L70 30L70 70L30 70Z" stroke="#00ff00" stroke-width="2" fill="rgba(0,255,0,0.1)"/>
-                    <circle cx="50" cy="50" r="15" stroke="#00ff00" stroke-width="2" fill="none"/>
-                    <path d="M50 35L50 65M35 50L65 50" stroke="#00ff00" stroke-width="2"/>
-                </svg>
-                <h3>Quantum Trading</h3>
-                <p>Next-generation trading strategies powered by quantum computing principles</p>
-            </div>
-
-            <div class="feature">
-                <svg class="feature-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 10L90 90L10 90Z" stroke="#00ff00" stroke-width="2" fill="none"/>
-                    <circle cx="50" cy="40" r="5" fill="#00ff00"/>
-                    <path d="M30 65L70 65" stroke="#00ff00" stroke-width="2"/>
-                    <path d="M35 75L65 75" stroke="#00ff00" stroke-width="2"/>
-                </svg>
-                <h3>Elite Training</h3>
-                <p>Comprehensive education programs for algorithmic trading mastery</p>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>© 2025 Focal QuantAI. Revolutionizing Financial Markets Through AI.</p>
-        </div>
-    </div>
-
-    <svg class="chart-background" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 150L50 120L100 140L150 90L200 110L250 70L300 85L350 45L400 60" stroke="#00ff00" stroke-width="2" fill="none" opacity="0.3"/>
-        <path d="M0 180L50 160L100 170L150 130L200 145L250 115L300 125L350 95L400 105" stroke="#40ff40" stroke-width="1" fill="none" opacity="0.2"/>
-    </svg>
 
     <script>
-        // Matrix rain effect
-        function createMatrixRain() {
-            const matrixRain = document.getElementById('matrixRain');
-            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            
-            for (let i = 0; i < 20; i++) {
-                const column = document.createElement('div');
-                column.className = 'matrix-column';
-                column.style.left = Math.random() * 100 + '%';
-                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                column.style.animationDelay = Math.random() * 2 + 's';
-                
-                let text = '';
-                for (let j = 0; j < 20; j++) {
-                    text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+        // --- Mobile Menu Toggle ---
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const xIcon = document.getElementById('x-icon');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            xIcon.classList.toggle('hidden');
+        });
+
+        // --- Modal Toggle ---
+        const modal = document.getElementById('waitlist-modal');
+        const openButtons = document.querySelectorAll('.modal-open');
+        const closeButtons = document.querySelectorAll('.modal-close-btn');
+        const overlay = document.querySelector('.modal-overlay');
+
+        const openModal = () => modal.classList.remove('hidden');
+        const closeModal = () => modal.classList.add('hidden');
+
+        openButtons.forEach(btn => btn.addEventListener('click', openModal));
+        closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
+        overlay.addEventListener('click', closeModal);
+
+        // --- Modal Form Submission (Mock) ---
+        const waitlistForm = document.getElementById('waitlist-form');
+        const formMessage = document.getElementById('form-message');
+
+        waitlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real app, you'd send this to a server
+            console.log('Form Submitted:', {
+                name: e.target.name.value,
+                email: e.target.email.value
+            });
+
+            // Show success message
+            waitlistForm.classList.add('hidden');
+            formMessage.classList.remove('hidden');
+
+            // Close modal after 3 seconds
+            setTimeout(() => {
+                closeModal();
+                // Reset form for next time
+                waitlistForm.classList.remove('hidden');
+                formMessage.classList.add('hidden');
+                waitlistForm.reset();
+            }, 3000);
+        });
+
+        // --- Smooth Scroll ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 }
-                column.innerHTML = text;
-                
-                matrixRain.appendChild(column);
+                // Close mobile menu on click
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden'); // Show menu icon
+                    xIcon.classList.add('hidden'); // Hide x icon
+                }
+            });
+        });
+
+        // --- Matrix Rain Animation ---
+        const matrixCanvasEl = document.getElementById('matrix-canvas');
+        const matrixCtx = matrixCanvasEl.getContext('2d');
+
+        let matrixCanvasWidth = matrixCanvasEl.width = window.innerWidth;
+        let matrixCanvasHeight = matrixCanvasEl.height = window.innerHeight;
+        let matrixCols = Math.floor(matrixCanvasWidth / 20) + 1;
+        let matrixYPos = Array(matrixCols).fill(0);
+
+        function resizeMatrixCanvas() {
+            matrixCanvasWidth = matrixCanvasEl.width = window.innerWidth;
+            matrixCanvasHeight = matrixCanvasEl.height = window.innerHeight;
+            matrixCols = Math.floor(matrixCanvasWidth / 20) + 1;
+            matrixYPos = Array(matrixCols).fill(0);
+        }
+        window.addEventListener('resize', resizeMatrixCanvas);
+
+        function matrix() {
+            // Draw a semi-transparent black rectangle to create the fading trail effect
+            matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            matrixCtx.fillRect(0, 0, matrixCanvasWidth, matrixCanvasHeight);
+
+            // Set text color to green
+            matrixCtx.fillStyle = '#00ff99'; // Custom green
+            matrixCtx.font = '15pt monospace';
+
+            // Loop over columns
+            matrixYPos.forEach((y, ind) => {
+                // Pick a random character
+                const text = String.fromCharCode(Math.random() * 128); // ASCII chars
+                const x = ind * 20;
+                matrixCtx.fillText(text, x, y);
+
+                // Reset drop to top randomly
+                if (y > 100 + Math.random() * 10000) {
+                    matrixYPos[ind] = 0;
+                } else {
+                    matrixYPos[ind] = y + 20;
+                }
+            });
+        }
+
+        // Run the animation
+        setInterval(matrix, 50);
+
+        // --- OHLC Visualization Logic ---
+        const candleTrack = document.getElementById('candle-track');
+        // Candle unit width including padding (16px total)
+        const CANDLE_WIDTH = 16;
+        const INITIAL_CANDLES = Math.ceil(window.innerWidth / CANDLE_WIDTH) * 2;
+        let scrollPosition = 0;
+        let lastTime = 0;
+        const speed = 0.05; // Scroll speed (0.05 pixels per millisecond)
+
+        function createCandle() {
+            const isBullish = Math.random() > 0.5;
+            // Generate realistic, but random heights (simplified)
+            const bodyHeight = 20 + Math.random() * 60; // 20px to 80px
+            const wickHeight = 10 + Math.random() * 40; // 10px to 50px
+
+            const candle = document.createElement('div');
+            candle.className = `candle-bar flex-shrink-0 ${isBullish ? 'bullish' : 'bearish'}`;
+            // Randomly offset candles from the bottom of the track
+            candle.style.marginBottom = `${Math.random() * 50 + 20}px`;
+
+            // Simplified 3-part structure: Top Wick, Body, Bottom Wick
+            // Heights are adjusted slightly to give some variation to the wicks
+            candle.innerHTML = `
+                <div class="candle-wick" style="height: ${wickHeight * (isBullish ? 0.3 : 0.7)}px;"></div>
+                <div class="candle-body" style="height: ${bodyHeight}px;"></div>
+                <div class="candle-wick" style="height: ${wickHeight * (isBullish ? 0.7 : 0.3)}px;"></div>
+            `;
+
+            return candle;
+        }
+
+        function initCandles() {
+            // Fill the initial screen space with candles
+            for (let i = 0; i < INITIAL_CANDLES; i++) {
+                candleTrack.appendChild(createCandle());
             }
         }
 
-        // Loading bar animation
-        function startLoading() {
-            const loadingBar = document.getElementById('loadingBar');
-            const progressText = document.getElementById('progressText');
-            let progress = 0;
-            
-            const loadingMessages = [
-                'INITIALIZING QUANTUM ALGORITHMS...',
-                'CONNECTING TO MARKET DATA...',
-                'CALIBRATING AI MODELS...',
-                'OPTIMIZING TRADING STRATEGIES...',
-                'SYNCHRONIZING NEURAL NETWORKS...',
-                'FINALIZING SYSTEM PARAMETERS...',
-                'READY FOR DEPLOYMENT...'
-            ];
-            
-            const interval = setInterval(() => {
-                progress += Math.random() * 15 + 5;
-                if (progress > 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    document.querySelector('.loading-text').textContent = 'SYSTEM READY - LAUNCHING SOON...';
+        function animateCandles(currentTime) {
+            if (!lastTime) lastTime = currentTime;
+            const deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+
+            // Calculate how much to scroll based on time and speed
+            const scrollAmount = speed * deltaTime;
+            scrollPosition -= scrollAmount;
+
+            // Apply translation for smooth scrolling
+            candleTrack.style.transform = `translateX(${scrollPosition}px)`;
+
+            // Check if one candle is completely off-screen
+            if (scrollPosition < -CANDLE_WIDTH) {
+                // Remove the oldest candle
+                if (candleTrack.firstChild) {
+                    candleTrack.removeChild(candleTrack.firstChild);
                 }
-                
-                loadingBar.style.width = progress + '%';
-                progressText.textContent = Math.floor(progress) + '%';
-                
-                // Update loading message
-                const messageIndex = Math.floor(progress / 15);
-                if (messageIndex < loadingMessages.length) {
-                    document.querySelector('.loading-text').textContent = loadingMessages[messageIndex];
-                }
-            }, 2000);
+
+                // Add a new candle to the end
+                candleTrack.appendChild(createCandle());
+
+                // Adjust the scroll position back by exactly one candle width
+                scrollPosition += CANDLE_WIDTH;
+            }
+
+            requestAnimationFrame(animateCandles);
         }
 
-        // Initialize effects
-        createMatrixRain();
-        startLoading();
+        // Start OHLC visualization after window loads
+        window.addEventListener('load', () => {
+            initCandles();
+            requestAnimationFrame(animateCandles);
+        });
 
-        // Add random glitch effect
-        setInterval(() => {
-            const elements = document.querySelectorAll('.logo h1, .feature h3');
-            const randomElement = elements[Math.floor(Math.random() * elements.length)];
-            
-            randomElement.style.transform = 'translateX(' + (Math.random() - 0.5) * 4 + 'px)';
-            randomElement.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg)';
-            
-            setTimeout(() => {
-                randomElement.style.transform = 'translateX(0)';
-                randomElement.style.filter = 'none';
-            }, 100);
-        }, 3000);
     </script>
 </body>
+
 </html>
